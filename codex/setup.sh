@@ -10,6 +10,9 @@ pushd src > /dev/null
 # and flakiness in headless environments.
 npm config delete proxy || true && npm config delete https-proxy || true
 
+# Ensure a clean install to avoid flakiness
+rm -rf node_modules
+
 # Deterministic, quiet install
 npm ci --no-audit --no-fund --progress=false --loglevel=error
 
