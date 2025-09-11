@@ -6,6 +6,15 @@
 
 A React-based frontend for exploring and managing Power BI and Fabric prompts with advanced filtering capabilities for Guy in a Cube content.
 
+## 🎥 Executive Briefing
+
+- **Watch the video**:
+  - Hosted: <https://fabricprompts.com/Executive_Briefing.mp4>
+  - Local dev: <http://localhost:5173/Executive_Briefing.mp4>
+- **Briefing notes**: [`Executive_Briefing.md`](Executive_Briefing.md)
+
+If you’re running locally via `npm run dev`, the video is served from Vite’s public directory and available at the Local dev URL above.
+
 ## 🎯 Features
 
 ### Advanced Prompt Filtering
@@ -67,7 +76,15 @@ npm run preview
 - Required repo variables: `AZURE_WEBAPP_NAME`, `AZURE_RESOURCE_GROUP`.
 - Builds frontend from `src/` and deploys a self-contained `release.zip` to Linux App Service.
 - Run-from-package enabled; a tiny Node server serves SPA with `/health` and `/version` endpoints.
-- Docs URL (Help): controlled by repo variable `VITE_HELP_URL` (iframe loads or falls back to external link).
+- Docs URL (Help): controlled by repo variable `VITE_HELP_CENTER_URL` (fallback to `VITE_HELP_URL`).
+
+## 📚 Documentation
+
+- Overview & Getting Started: see sections below and `src/README-REACT.md`
+- Executive Briefing: see links in the "Executive Briefing" section above
+- Azure Deployment: `docs/DEPLOYMENT_AZURE.md`
+- Validation & Checks: `docs/VALIDATION.md`
+- Upstream Content Pipeline (GIAC/Workforce): `docs/UPSTREAM_PIPELINE.md`
 
 ## 📊 Data Structure
 
@@ -309,7 +326,6 @@ npm run build
 - ✅ **Responsive design** works on all devices
 
 The frontend provides a comprehensive, user-friendly interface for exploring both expert Guy in a Cube content and custom workforce prompts with advanced filtering and visualization capabilities.
-
 
 - Azure Web App via GitHub Actions (`.github/workflows/azure-deploy.yml`)
 - Builds under `src/` using Node 20 and deploys `src/dist`

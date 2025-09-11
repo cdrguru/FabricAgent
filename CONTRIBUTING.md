@@ -13,12 +13,14 @@ Thanks for your interest in contributing! This project is a Vite + React fronten
 ## Tests
 
 If tests are present:
+
 - Unit tests: `npm test`
 - E2E (if configured): `npm run test:e2e`
 
 ## Commit Conventions
 
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
+
 - `feat:` new feature
 - `fix:` bug fix
 - `docs:` documentation only

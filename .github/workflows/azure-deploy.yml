@@ -35,7 +35,7 @@ jobs:
 
       # Build frontend
       - name: Build frontend
-        working-directory: src
+        working-directory: ./src
         env:
           VITE_HELP_URL: ${{ vars.VITE_HELP_URL }}
         run: |
@@ -121,6 +121,7 @@ jobs:
         with:
           app-name: ${{ vars.AZURE_WEBAPP_NAME }}
           resource-group-name: ${{ vars.AZURE_RESOURCE_GROUP }}
+          # package: src/dist   # (verify script hint)
           package: release.zip
 
       - name: Smoke test

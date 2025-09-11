@@ -29,8 +29,11 @@ export const GROUP_COLORS: { [key: string]: string } = {
   'other': '#aaaaaa'
 };
 
+// Prefer VITE_HELP_CENTER_URL; fallback to VITE_HELP_URL; then public README.
+// verify: import.meta.env.VITE_HELP_CENTER_URL
 export const HELP_URL =
-  ((import.meta as any).env?.VITE_HELP_URL as string) ||
+  (import.meta.env.VITE_HELP_CENTER_URL as string | undefined) ||
+  (import.meta.env.VITE_HELP_URL as string | undefined) ||
   'https://github.com/cdrguru/FabricAgent#readme';
 
 // Map common aliases/synonyms to canonical pillar keys used above
