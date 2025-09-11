@@ -29,12 +29,11 @@ export const GROUP_COLORS: { [key: string]: string } = {
   'other': '#aaaaaa'
 };
 
-// Prefer VITE_HELP_CENTER_URL; fallback to VITE_HELP_URL; then public README.
-// verify: import.meta.env.VITE_HELP_CENTER_URL
-// Prefer configured help center; otherwise load the bundled static help page.
+// Help Center URL: env override -> Chatbase default -> bundled static page
 export const HELP_URL =
   (import.meta.env.VITE_HELP_CENTER_URL as string | undefined) ||
   (import.meta.env.VITE_HELP_URL as string | undefined) ||
+  'https://www.chatbase.co/mnxB5kB3I-JSpdYAEJB2W/help' ||
   '/help/index.html';
 
 // Map common aliases/synonyms to canonical pillar keys used above
