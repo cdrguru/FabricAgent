@@ -24,6 +24,9 @@ if [[ "${HTTPS_PROXY_URL:-}" != "" ]]; then
   npm config set proxy "${HTTP_PROXY}" >/dev/null 2>&1 || true
   # Common safe NO_PROXY baseline (add your internal domains/subnets if needed)
   export NO_PROXY="localhost,127.0.0.1,::1"
+else
+  # Ensure no proxy env vars are set when not using enterprise proxy
+  unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
 fi
 
 # 2) Optional corporate root CA
@@ -77,6 +80,13 @@ for attempt in $(seq 1 "$max"); do
   echo "npm install attempt $attempt/$max..."
   if "${INSTALL_CMD[@]}"; then
     echo "npm ci succeeded"
+    
+    # 5a) Check for Rollup native dependency issues and fix them
+    if [[ -d node_modules/rollup ]] && ! npm ls @rollup/rollup-linux-x64-gnu >/dev/null 2>&1; then
+      echo "Installing Rollup native dependencies for Linux x64..."
+      npm install @rollup/rollup-linux-x64-gnu --no-save --ignore-scripts >/dev/null 2>&1 || true
+    fi
+    
     break
   fi
   rc=$?
