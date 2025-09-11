@@ -25,3 +25,4 @@ myprompts
 here/
 .kiro/*
 .speckit/*
+src/.codex_lock.sha256

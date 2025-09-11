@@ -13,6 +13,11 @@ interface WorkflowGraphProps {
     globalPromptMap: Map<string, Prompt>;
 }
 
+const escapeHtml = (s: string) => s
+  .replaceAll('&', '&amp;')
+  .replaceAll('<', '&lt;')
+  .replaceAll('>', '&gt;');
+
 export const WorkflowGraph: React.FC<WorkflowGraphProps> = ({ dag, onNodeClick, globalPromptMap }) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const networkRef = useRef<any>(null);
@@ -74,12 +79,17 @@ export const WorkflowGraph: React.FC<WorkflowGraphProps> = ({ dag, onNodeClick, 
             const label = String(rawLabel)
               .replace(/<br\s*\/?>(\n)?/gi, "\n")
               .replace(/<[^>]*>/g, "");
-            // Sanitize tooltip HTML
-            const plainTitle = `Title: ${label}\nPillar: ${group}`;
+            // HTML tooltip: escape text, preserve line breaks with <br />
+            const safeLabel = escapeHtml(label).replace(/\n/g, '<br />');
+            const safeGroup = escapeHtml(group);
+            const tooltipHtml = DOMPurify.sanitize(
+              `Title: ${safeLabel}<br />Pillar: ${safeGroup}`,
+              { ALLOWED_TAGS: ['br'] }
+            );
             return {
                 id: n.id,
                 label: (hasSafety ? '🛡️ ' : '') + label,
-                title: plainTitle,
+                title: tooltipHtml,
                 group: group,
                 level: level.get(n.id) ?? undefined,
             };
