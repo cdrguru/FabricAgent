@@ -11,7 +11,7 @@ pushd src > /dev/null
 npm config delete proxy || true && npm config delete https-proxy || true
 
 # Deterministic, quiet install
-npm ci --no-audit --no-fund --progress=false
+npm ci --no-audit --no-fund --progress=false --loglevel=error
 
 # Build the app
 npm run build
@@ -19,4 +19,3 @@ npm run build
 popd > /dev/null
 
 echo "==> Codex setup: done"
-
