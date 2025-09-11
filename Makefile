@@ -1,6 +1,6 @@
 .PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api codex-setup
 
-	help:
+help:
 	@echo "Fabric Agent Makefile"
 	@echo "Targets:"
 	@echo "  install    Install web app dependencies (under src/)"
