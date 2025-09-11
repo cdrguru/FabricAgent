@@ -53,22 +53,8 @@ jobs:
           mkdir -p release
           cp -r src/dist/* release/
 
-          # Tiny SPA server for deep-link routing and health
-          cat > release/server.js <<'JS'
-          import express from 'express';
-          import path from 'path';
-          import { fileURLToPath } from 'url';
-          const __filename = fileURLToPath(import.meta.url);
-          const __dirname = path.dirname(__filename);
-          const app = express();
-          // Prefer redirect for /help to external Help Center
-          // Serve static assets and SPA fallback. No explicit /help redirect.
-          app.use(express.static(__dirname));
-          app.get('/health', (_req,res)=>res.json({ok:true, ts:new Date().toISOString()}));
-          app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-          const port = process.env.PORT || 8080;
-          app.listen(port, () => console.log(`SPA server listening on ${port}`));
-          JS
+          # Use bundled Node server with /api/rewrite reading AZURE_* settings
+          cp scripts/server.mjs release/server.mjs
 
           cat > release/package.json <<'JSON'
           {
@@ -76,13 +62,11 @@ jobs:
             "private": true,
             "version": "0.1.0",
             "type": "module",
-            "scripts": { "start": "node server.js" },
-            "engines": { "node": ">=20" },
-            "dependencies": { "express": "^4.19.2" }
+            "scripts": { "start": "node server.mjs" },
+            "engines": { "node": ">=20" }
           }
           JSON
 
-          npm --prefix release install --omit=dev
           printf '{"version":"%s","runId":"%s","builtAt":"%s"}\n' \
             "${GITHUB_SHA}" "${GITHUB_RUN_ID}" "$(date -u +%FT%TZ)" > release/version.json
 

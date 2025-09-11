@@ -10,7 +10,7 @@ export async function rewriteText(opts: RewriteOptions): Promise<string> {
   const { text } = opts;
   const instruction = opts.instruction || 'Rewrite clearly while preserving technical accuracy.';
 
-  const proxyUrl = (import.meta.env.VITE_REWRITE_API_URL as string | undefined) || '';
+  const proxyUrl = (import.meta.env.VITE_REWRITE_API_URL as string | undefined) || (typeof window !== 'undefined' ? '/api/rewrite' : '');
   if (proxyUrl) {
     const res = await fetch(proxyUrl, {
       method: 'POST',
@@ -56,4 +56,3 @@ export async function rewriteText(opts: RewriteOptions): Promise<string> {
   const content = data?.choices?.[0]?.message?.content || '';
   return String(content || '').trim();
 }
-

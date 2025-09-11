@@ -15,6 +15,7 @@ help:
 	@echo "  userguide-ci-validate  Validate CI-friendly automation run"
 	@echo "  api        Run HTTP API server for automation"
 	@echo "  rewrite-proxy  Run local Azure OpenAI rewrite proxy on :8787"
+	@echo "  serve       Run local server for dist + /api/rewrite (uses AZURE_* env)"
 	@echo "  codex-setup  Run Codex install + build script"
 	@echo "  codex-maintenance  Run Codex maintenance (cached deps health check)"
 	@echo "  clean      Remove generated inventory"
@@ -62,6 +63,9 @@ api:
 
 rewrite-proxy:
 	@node scripts/rewrite-proxy.mjs
+
+serve:
+	@node scripts/server.mjs
 
 clean:
 	@rm -f .reports/INVENTORY.jsonl
