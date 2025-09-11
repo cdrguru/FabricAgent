@@ -27,6 +27,7 @@ This guide is the minimal, high‑signal context for working on this repository 
 - Preview build: `make preview`
 - Regenerate inventory: `make inventory`
 - Run validations: `make validate` or `make verify`
+- Codex one-shot setup: `make codex-setup`
 
 ## How Codex Should Work Here
 

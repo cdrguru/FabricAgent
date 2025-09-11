@@ -1,6 +1,6 @@
-.PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api
+.PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api codex-setup
 
-help:
+	help:
 	@echo "Fabric Agent Makefile"
 	@echo "Targets:"
 	@echo "  install    Install web app dependencies (under src/)"
@@ -14,6 +14,7 @@ help:
 	@echo "  userguide-sample  Run pipeline on sample fixtures"
 	@echo "  userguide-ci-validate  Validate CI-friendly automation run"
 	@echo "  api        Run HTTP API server for automation"
+	@echo "  codex-setup  Run Codex install + build script"
 	@echo "  clean      Remove generated inventory"
 
 install:
@@ -27,6 +28,9 @@ build:
 
 preview:
 	@npm -C src run preview
+
+codex-setup:
+	@bash codex/setup.sh
 
 inventory:
 	@mkdir -p .reports

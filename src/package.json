@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Microsoft Fabric and Power BI Prompt Catalog Explorer",
   "license": "MIT",
+  "engines": {
+    "node": ">=20 <21",
+    "npm": ">=10"
+  },
   "dependencies": {
     "dompurify": "^3.2.6",
     "html-react-parser": "^5.2.6",
