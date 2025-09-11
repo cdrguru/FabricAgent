@@ -5,8 +5,12 @@ echo "==> Codex setup: installing and building (src)"
 pushd src >/dev/null
 
 # 0) Clean slate: remove env that can silently force prod-only/omit or stale proxies
-unset NPM_CONFIG_HTTP_PROXY NPM_CONFIG_HTTPS_PROXY HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy NO_PROXY no_proxy
+# Note: We'll set proxy vars below if HTTPS_PROXY_URL is provided as a secret
+unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy NO_PROXY no_proxy
 unset NPM_CONFIG_PRODUCTION npm_config_production NPM_CONFIG_OMIT npm_config_omit
+# Clear any existing npm proxy configs (will be reset if HTTPS_PROXY_URL is set)
+npm config delete proxy 2>/dev/null || true
+npm config delete https-proxy 2>/dev/null || true
 
 # 1) Optional enterprise proxy (provided via Codex Secrets)
 #    - If HTTPS_PROXY_URL is set, export both upper/lower variants and npm-compatible vars.
@@ -15,8 +19,9 @@ if [[ "${HTTPS_PROXY_URL:-}" != "" ]]; then
   export HTTP_PROXY="${HTTPS_PROXY}"
   export https_proxy="${HTTPS_PROXY}"
   export http_proxy="${HTTP_PROXY}"
-  export NPM_CONFIG_HTTPS_PROXY="${HTTPS_PROXY}"
-  export NPM_CONFIG_HTTP_PROXY="${HTTP_PROXY}"
+  # Use npm config set instead of deprecated env vars
+  npm config set https-proxy "${HTTPS_PROXY}" >/dev/null 2>&1 || true
+  npm config set proxy "${HTTP_PROXY}" >/dev/null 2>&1 || true
   # Common safe NO_PROXY baseline (add your internal domains/subnets if needed)
   export NO_PROXY="localhost,127.0.0.1,::1"
 fi
@@ -30,17 +35,21 @@ if [[ -n "${CORP_CA_FILE:-}" && -f "${CORP_CA_FILE}" ]]; then
   git config --global http.sslCAInfo "$CA_FILE" >/dev/null 2>&1 || true
 elif [[ -n "${CORP_CA_B64:-}" ]]; then
   CA_FILE="/tmp/corp-ca.pem"
-  # Try multiple decoders for portability
-  if command -v base64 >/dev/null 2>&1; then
-    echo "$CORP_CA_B64" | base64 --decode > "$CA_FILE" 2>/dev/null \
-      || echo "$CORP_CA_B64" | base64 -D > "$CA_FILE" 2>/dev/null \
-      || echo "$CORP_CA_B64" | openssl base64 -d -A > "$CA_FILE"
+  # Use openssl for consistent base64 decoding (handles -A flag properly)
+  if echo "$CORP_CA_B64" | openssl base64 -d -A > "$CA_FILE" 2>/dev/null; then
+    # Validate the PEM file was created correctly
+    if openssl x509 -in "$CA_FILE" -noout -text >/dev/null 2>&1; then
+      export NODE_EXTRA_CA_CERTS="$CA_FILE"
+      npm config set cafile "$CA_FILE" >/dev/null 2>&1 || true
+      git config --global http.sslCAInfo "$CA_FILE" >/dev/null 2>&1 || true
+      echo "[info] Corporate CA certificate loaded from CORP_CA_B64"
+    else
+      echo "[warn] Invalid certificate in CORP_CA_B64, skipping CA setup"
+      rm -f "$CA_FILE"
+    fi
   else
-    echo "$CORP_CA_B64" | openssl base64 -d -A > "$CA_FILE"
+    echo "[warn] Failed to decode CORP_CA_B64, skipping CA setup"
   fi
-  export NODE_EXTRA_CA_CERTS="$CA_FILE"
-  npm config set cafile "$CA_FILE" >/dev/null 2>&1 || true
-  git config --global http.sslCAInfo "$CA_FILE" >/dev/null 2>&1 || true
 fi
 
 # 3) Resilient npm networking + tidy config
@@ -50,8 +59,11 @@ npm config set fetch-retry-factor 2
 npm config set fetch-retry-mintimeout 2000
 npm config set fetch-retry-maxtimeout 20000
 npm config set prefer-online true || true
-npm config delete proxy || true
-npm config delete https-proxy || true
+# Only delete proxy configs if not set by enterprise proxy above
+if [[ "${HTTPS_PROXY_URL:-}" == "" ]]; then
+  npm config delete proxy 2>/dev/null || true
+  npm config delete https-proxy 2>/dev/null || true
+fi
 
 # 4) Preflight reachability (non-fatal; hints if we lack a proxy)
 if ! npm ping; then
