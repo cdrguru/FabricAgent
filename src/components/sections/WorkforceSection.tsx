@@ -64,6 +64,15 @@ export const WorkforceSection: React.FC<WorkforceSectionProps> = ({
         try { return getSuggestions(filters.q || '', suggestIndex, 6); } catch { return []; }
     }, [filters.q, suggestIndex]);
 
+    React.useEffect(() => {
+        const handler = (e: Event) => {
+            const detail = (e as CustomEvent<any>).detail || {};
+            setFilters(prev => ({ ...prev, ...detail }));
+        };
+        window.addEventListener('fa:apply-preset', handler as any);
+        return () => window.removeEventListener('fa:apply-preset', handler as any);
+    }, [setFilters]);
+
     // Grouped pillars matching spec
     const groupedPillars = useMemo(() => {
         const groups: Record<string, string[]> = {

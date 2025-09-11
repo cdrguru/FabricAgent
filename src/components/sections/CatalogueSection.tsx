@@ -105,6 +105,16 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
         try { return getSuggestions(filters.q || '', suggestIndex, 6); } catch { return []; }
     }, [filters.q, suggestIndex]);
 
+    // Listen for global preset patches (from the "It Depends" widget)
+    React.useEffect(() => {
+        const handler = (e: Event) => {
+            const detail = (e as CustomEvent<any>).detail || {};
+            setFilters(prev => ({ ...prev, ...detail }));
+        };
+        window.addEventListener('fa:apply-preset', handler as any);
+        return () => window.removeEventListener('fa:apply-preset', handler as any);
+    }, [setFilters]);
+
     // Grouped pillars as per spec
     const groupedPillars = useMemo(() => {
         const groups: Record<string, string[]> = {
