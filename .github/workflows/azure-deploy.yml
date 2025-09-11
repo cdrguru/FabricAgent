@@ -37,6 +37,8 @@ jobs:
       - name: Build frontend
         working-directory: ./src
         env:
+          # Prefer HELP_CENTER_URL if set; code reads this first.
+          VITE_HELP_CENTER_URL: ${{ vars.VITE_HELP_CENTER_URL }}
           VITE_HELP_URL: ${{ vars.VITE_HELP_URL }}
         run: |
           npm install
