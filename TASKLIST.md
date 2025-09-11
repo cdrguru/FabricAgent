@@ -84,6 +84,10 @@ Progress Snapshot
 - [ ] T042 Performance: cache suggestions/scoring; verify <200ms render for ~1k items in `src/tests/perf-suggestions.spec.ts`.
 - [ ] T043 Remove duplication and run `make build` sanity; ensure a11y isn’t regressed.
 
+## Fun & Delight
+
+- [x] T044 Easter egg — “It Depends” button in header with donation link and local click counter. Env override: `VITE_DONATION_URL`.
+
 ## Dependencies
 
 - Tests (T006–T012) before implementation (T013–T033).

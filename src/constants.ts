@@ -38,6 +38,11 @@ export const HELP_URL =
   'https://www.chatbase.co/mnxB5kB3I-JSpdYAEJB2W/help' ||
   '/help/index.html';
 
+// Optional donation URL used by the "It Depends" easter egg
+export const DONATION_URL =
+  (import.meta.env.VITE_DONATION_URL as string | undefined) ||
+  'https://www.directrelief.org/donate/';
+
 // Map common aliases/synonyms to canonical pillar keys used above
 export const PILLAR_ALIASES: Record<string, string> = {
   // Career & soft skills pillar

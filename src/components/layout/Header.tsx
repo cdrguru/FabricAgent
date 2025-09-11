@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { ItDepends } from '../ui/ItDepends';
 import type { Section } from '../../App';
 
 interface HeaderProps {
@@ -23,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onSectionChange, 
                            <span className="font-bold text-lg text-slate-800 hidden sm:inline">FabricAgent</span>
                         </Link>
                          <span className="text-xs bg-slate-100 text-slate-600 px-2 py-1 rounded-full hidden md:inline">{sourceLabel}</span>
+                         <div className="hidden md:inline-block ml-2"><ItDepends /></div>
                     </div>
 
                     <nav>
