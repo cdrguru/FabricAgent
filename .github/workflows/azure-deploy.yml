@@ -92,7 +92,8 @@ jobs:
           az webapp show -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "${{ vars.AZURE_WEBAPP_NAME }}" --query "{name:name, hostName:defaultHostName, kind:kind, linuxFx:siteConfig.linuxFxVersion}" -o json
 
       # Optional: ensure Node version/app settings on the Web App
-      - name: Configure app settings
+      - name: Configure app settings (opt-in)
+        if: ${{ vars.CONFIGURE_APP_SETTINGS == 'true' }}
         run: |
           az webapp config appsettings set \
             -g "${{ vars.AZURE_RESOURCE_GROUP }}" \
