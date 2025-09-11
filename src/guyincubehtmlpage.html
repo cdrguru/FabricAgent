@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guy in a Cube Prompts Catalog</title>
+    <meta name="description"
+        content="A curated and deduplicated catalog of prompts distilled from Guy in a Cube YouTube videos. Search, filter, and explore expert guidance on Power BI, Fabric, DAX, and more." />
+    <link rel="icon"
+        href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkMSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3R5bGU9InN0b3AtY29sb3I6I0ZCQkYyNDtzdG9wLW9wYWNpdHk6MSIgLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNGNTlFMEI7c3RvcC1vcGFjaXR5OjEiIC8+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQyIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdHlsZT0ic3RvcC1jb2xvcjojM0I4MkY2O3N0b3Atb3BhY2l0eToxIiAvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6IzI1NjNFQjtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNIDIwIDIwIEggODAgViAzNSBIIDIwIFoiIGZpbGw9InVybCgjZ3JhZDEpIiAvPjxyZWN0IHg9IjIwIiB5PSI0NSIgd2lkdGg9IjYwIiBoZWlnaHQ9IjE1IiBmaWxsPSJ1cmwoI2dyYWQyKSIgLz48cmVjdCB4PSIyMCIgeT0iNjUiIHdpZHRoPSIzNSIgaGVpZ2h0PSIxNSIgZmlsbD0idXJsKCNncmFkMikiIC8+PC9zdmc+">
+
+    <style>
+        /* General Styles & Color Scheme */
+        :root {
+            --color-text: #1f2937;
+            --color-bg: #f9fafb;
+            --color-bg-secondary: #ffffff;
+            --color-border: #e5e7eb;
+            --color-primary: #3b82f6;
+            --color-primary-hover: #2563eb;
+            --color-secondary-text: #6b7280;
+            --color-card-bg: #ffffff;
+            --color-card-shadow: rgba(0, 0, 0, 0.05);
+            --color-tag-bg: #eef2ff;
+            --color-tag-text: #4338ca;
+            --color-focus-ring: rgba(59, 130, 246, 0.5);
+            --font-sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-text: #d1d5db;
+                --color-bg: #111827;
+                --color-bg-secondary: #1f2937;
+                --color-border: #374151;
+                --color-primary: #60a5fa;
+                --color-primary-hover: #93c5fd;
+                --color-secondary-text: #9ca3af;
+                --color-card-bg: #1f2937;
+                --color-card-shadow: rgba(0, 0, 0, 0.2);
+                --color-tag-bg: #3730a3;
+                --color-tag-text: #e0e7ff;
+                --color-focus-ring: rgba(96, 165, 250, 0.6);
+            }
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Accessibility */
+        :focus-visible {
+            outline: 3px solid var(--color-focus-ring);
+            outline-offset: 2px;
+            border-radius: 4px;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Simple Layout Helpers */
+        .container {
+            width: 100%;
+            max-width: 1280px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .sticky {
+            position: sticky;
+        }
+
+        .top-0 {
+            top: 0;
+        }
+
+        .top-16 {
+            top: 4rem;
+        }
+
+        /* Approx height of header */
+        .z-20 {
+            z-index: 20;
+        }
+
+        .z-40 {
+            z-index: 40;
+        }
+
+        .z-50 {
+            z-index: 50;
+        }
+
+        .fixed {
+            position: fixed;
+        }
+
+        .inset-0 {
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        .mx-auto {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .my-8 {
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 0.75rem;
+        }
+
+        .mt-12 {
+            margin-top: 3rem;
+        }
+
+        .p-4 {
+            padding: 1rem;
+        }
+
+        .p-1 {
+            padding: 0.25rem;
+        }
+
+        .p-6 {
+            padding: 1.5rem;
+        }
+
+        .p-10 {
+            padding: 2.5rem;
+        }
+
+        .px-4 {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+
+        .py-3 {
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+
+        .py-6 {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .pl-10 {
+            padding-left: 2.5rem;
+        }
+
+        .pr-4 {
+            padding-right: 1rem;
+        }
+
+        .py-2 {
+            padding-top: 0.5rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-end {
+            justify-content: flex-end;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .flex-wrap {
+            flex-wrap: wrap;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        .gap-2 {
+            gap: 0.5rem;
+        }
+
+        .gap-3 {
+            gap: 0.75rem;
+        }
+
+        .gap-4 {
+            gap: 1rem;
+        }
+
+        .gap-6 {
+            gap: 1.5rem;
+        }
+
+        .w-full {
+            width: 100%;
+        }
+
+        .w-5 {
+            width: 1.25rem;
+        }
+
+        .h-5 {
+            height: 1.25rem;
+        }
+
+        .h-10 {
+            height: 2.5rem;
+        }
+
+        .max-w-3xl {
+            max-width: 48rem;
+        }
+
+        .max-h-\[90vh\] {
+            max-height: 90vh;
+        }
+
+        .rounded-md {
+            border-radius: 0.375rem;
+        }
+
+        .rounded-lg {
+            border-radius: 0.5rem;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        .border {
+            border-width: 1px;
+        }
+
+        .border-b {
+            border-bottom-width: 1px;
+        }
+
+        .border-t {
+            border-top-width: 1px;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-xs {
+            font-size: 0.75rem;
+        }
+
+        .text-lg {
+            font-size: 1.125rem;
+        }
+
+        .text-xl {
+            font-size: 1.25rem;
+        }
+
+        .text-2xl {
+            font-size: 1.5rem;
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .font-semibold {
+            font-weight: 600;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .uppercase {
+            text-transform: uppercase;
+        }
+
+        .capitalize {
+            text-transform: capitalize;
+        }
+
+        .tracking-wider {
+            letter-spacing: 0.05em;
+        }
+
+        .line-clamp-3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+        }
+
+        .shadow-sm {
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .shadow-2xl {
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .bg-white {
+            background-color: var(--color-bg-secondary);
+        }
+
+        .bg-gray-50 {
+            background-color: var(--color-bg);
+        }
+
+        .bg-gray-100 {
+            background-color: #f3f4f6;
+        }
+
+        .bg-red-100 {
+            background-color: #fee2e2;
+        }
+
+        .bg-black {
+            background-color: #000;
+        }
+
+        .bg-opacity-60 {
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .text-gray-200 {
+            color: #e5e7eb;
+        }
+
+        .text-gray-400 {
+            color: var(--color-secondary-text);
+        }
+
+        .text-gray-500 {
+            color: #6b7280;
+        }
+
+        .text-gray-600 {
+            color: #4b5563;
+        }
+
+        .text-gray-800 {
+            color: var(--color-text);
+        }
+
+        .text-gray-900 {
+            color: #111827;
+        }
+
+        .text-red-300 {
+            color: #fca5a5;
+        }
+
+        .text-red-700 {
+            color: #b91c1c;
+        }
+
+        .text-blue-400 {
+            color: #60a5fa;
+        }
+
+        .text-blue-500 {
+            color: #3b82f6;
+        }
+
+        .text-white {
+            color: #ffffff;
+        }
+
+        .border-gray-200 {
+            border-color: #e5e7eb;
+        }
+
+        .border-gray-300 {
+            border-color: #d1d5db;
+        }
+
+        .border-gray-600 {
+            border-color: #4b5563;
+        }
+
+        .border-gray-700 {
+            border-color: var(--color-border);
+        }
+
+        .focus\:ring-2:focus {
+            box-shadow: 0 0 0 2px var(--color-focus-ring);
+        }
+
+        .focus\:border-blue-500:focus {
+            border-color: #3b82f6;
+        }
+
+        .absolute {
+            position: absolute;
+        }
+
+        .relative {
+            position: relative;
+        }
+
+        .inset-y-0 {
+            top: 0;
+            bottom: 0;
+        }
+
+        .left-0 {
+            left: 0;
+        }
+
+        .pointer-events-none {
+            pointer-events: none;
+        }
+
+        .backdrop-blur-sm {
+            backdrop-filter: blur(4px);
+        }
+
+        .hover\:bg-gray-200:hover {
+            background-color: #e5e7eb;
+        }
+
+        .hover\:text-gray-600:hover {
+            color: #4b5563;
+        }
+
+        /* Dark Mode Specifics */
+        @media (prefers-color-scheme: dark) {
+            .dark\:bg-gray-800 {
+                background-color: var(--color-card-bg);
+            }
+
+            .dark\:bg-gray-900 {
+                background-color: var(--color-bg);
+            }
+
+            .dark\:bg-gray-700 {
+                background-color: #374151;
+            }
+
+            .dark\:bg-gray-900\/80 {
+                background-color: rgba(17, 24, 39, 0.8);
+            }
+
+            .dark\:bg-gray-800\/95 {
+                background-color: rgba(31, 41, 55, 0.95);
+            }
+
+            .dark\:bg-red-900\/20 {
+                background-color: rgba(76, 29, 29, 0.2);
+            }
+
+            .dark\:text-gray-200 {
+                color: var(--color-text);
+            }
+
+            .dark\:text-gray-400 {
+                color: var(--color-secondary-text);
+            }
+
+            .dark\:text-white {
+                color: #ffffff;
+            }
+
+            .dark\:border-gray-600 {
+                border-color: #4b5563;
+            }
+
+            .dark\:border-gray-700 {
+                border-color: var(--color-border);
+            }
+
+            .dark\:hover\:bg-gray-700:hover {
+                background-color: #374151;
+            }
+
+            .dark\:hover\:text-white:hover {
+                color: #ffffff;
+            }
+        }
+
+        /* Media Queries for responsiveness */
+        @media (min-width: 768px) {
+
+            /* md */
+            .md\:grid-cols-2 {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .md\:text-2xl {
+                font-size: 1.5rem;
+            }
+
+            .md\:text-sm {
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+
+            /* lg */
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .lg\:flex {
+                display: flex;
+            }
+
+            .lg\:items-center {
+                align-items: center;
+            }
+
+            .lg\:gap-4 {
+                gap: 1rem;
+            }
+
+            .lg\:space-y-0> :not([hidden])~ :not([hidden]) {
+                --tw-space-y-reverse: 0;
+                margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
+                margin-bottom: calc(0px * var(--tw-space-y-reverse));
+            }
+
+            .lg\:flex-grow {
+                flex-grow: 1;
+            }
+
+            .lg\:flex-none {
+                flex: none;
+            }
+        }
+
+        /* Header & Controls */
+        .header h1,
+        .header .subtitle {
+            margin: 0;
+        }
+
+        .controls-bar input,
+        .controls-bar select {
+            background-color: var(--color-bg-secondary);
+            border: 1px solid var(--color-border);
+            color: var(--color-text);
+            width: 100%;
+            height: 2.5rem;
+            padding-left: 0.75rem;
+            padding-right: 0.75rem;
+            border-radius: 0.375rem;
+        }
+
+        .controls-bar input[type="search"] {
+            padding-left: 2.5rem;
+        }
+
+        /* Pillar Filter Chips */
+        .pillar-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            background-color: var(--color-bg);
+            color: var(--color-secondary-text);
+            border-color: var(--color-border);
+        }
+
+        .pillar-chip:hover {
+            background-color: var(--color-bg-secondary);
+        }
+
+        .pillar-chip[aria-pressed="true"] {
+            background-color: var(--color-primary);
+            color: white;
+            border-color: var(--color-primary);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .pillar-chip[aria-pressed="true"] {
+                color: var(--color-bg-secondary);
+            }
+        }
+
+        /* Buttons */
+        .button-primary,
+        .button-secondary {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            border: 1px solid transparent;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+
+        .button-primary {
+            background-color: var(--color-primary);
+            color: white;
+        }
+
+        .button-primary:hover {
+            background-color: var(--color-primary-hover);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .button-primary {
+                color: var(--color-bg-secondary);
+            }
+        }
+
+        .button-secondary {
+            background-color: var(--color-bg-secondary);
+            color: var(--color-text);
+            border-color: var(--color-border);
+        }
+
+        .button-secondary:hover {
+            background-color: var(--color-bg);
+        }
+
+        /* Prompt Card */
+        .prompt-card {
+            background-color: var(--color-card-bg);
+            border: 1px solid var(--color-border);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 1px 3px 0 var(--color-card-shadow);
+        }
+
+        .prompt-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px var(--color-card-shadow), 0 4px 6px -4px var(--color-card-shadow);
+        }
+
+        .prompt-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin: 0.25rem 0 0.5rem;
+            color: var(--color-text);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .prompt-card h3 {
+                color: white;
+            }
+        }
+
+        .prompt-card p {
+            font-size: 0.875rem;
+            color: var(--color-secondary-text);
+            line-height: 1.5;
+            flex-grow: 1;
+            margin: 0 0 1rem;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid var(--color-border);
+        }
+
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background-color: var(--color-tag-bg);
+            color: var(--color-tag-text);
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Modal */
+        .modal-backdrop {
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-content {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            transform: scale(0.95);
+            opacity: 0;
+        }
+
+        #details-modal:not([hidden]) .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .modal-body h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .modal-body h3 {
+                color: white;
+            }
+        }
+
+        .modal-body h3:first-child {
+            margin-top: 0;
+        }
+
+        .modal-body pre {
+            background-color: var(--color-bg);
+            border: 1px solid var(--color-border);
+            padding: 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .modal-body code {
+            font-family: Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .source-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--color-primary);
+            text-decoration: none;
+        }
+
+        .source-link:hover {
+            text-decoration: underline;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+
+        .sm\:grid-cols-2 {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .gap-x-4 {
+            column-gap: 1rem;
+        }
+
+        .gap-y-2 {
+            row-gap: 0.5rem;
+        }
+
+        /* Print styles for modal */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+
+            #details-modal,
+            #details-modal * {
+                visibility: visible;
+            }
+
+            #details-modal {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                max-width: 100%;
+                max-height: none;
+                box-shadow: none;
+                border: none;
+            }
+
+            .modal-header,
+            .modal-footer {
+                display: none;
+            }
+
+            .modal-body {
+                overflow-y: visible;
+            }
+
+            .modal-content {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+
+    <header
+        class="header sticky top-0 z-20 bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <svg width="40" height="40" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"
+                    alt="Guy in a Cube logo">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#FBBF24;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#F59E0B;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#2563EB;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 20 20 H 80 V 35 H 20 Z" fill="url(#grad1)" />
+                    <rect x="20" y="45" width="60" height="15" fill="url(#grad2)" />
+                    <rect x="20" y="65" width="35" height="15" fill="url(#grad2)" />
+                </svg>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">Guy in a Cube Prompts</h1>
+                    <p class="text-xs md:text-sm text-gray-500 dark:text-gray-400">Curated prompts distilled from GIAC
+                        videos</p>
+                </div>
+            </div>
+            <div id="stats-summary" class="text-right text-xs text-gray-500 dark:text-gray-400"></div>
+        </div>
+    </header>
+
+    <nav class="controls-bar sticky top-16 z-20 bg-white/95 dark:bg-gray-800/95 backdrop-blur-sm shadow-sm"
+        aria-label="Filter and search controls">
+        <div class="container mx-auto px-4 py-3">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:flex lg:items-center lg:gap-4 lg:space-y-0"
+                style="row-gap: 0.75rem;">
+
+                <div class="search-group lg:flex-grow">
+                    <label for="search-input" class="sr-only">Search prompts</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="w-5 h-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                        </div>
+                        <input type="search" id="search-input" placeholder="Search (name, description, tags)..."
+                            autocomplete="off"
+                            class="w-full pl-10 pr-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:border-blue-500" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 lg:gap-4 lg:flex-none">
+                    <div class="filter-group">
+                        <label for="category-filter" class="sr-only">Filter by category</label>
+                        <select id="category-filter" aria-label="Filter by Category"
+                            class="w-full h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:border-blue-500">
+                            <option value="">All Categories</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="sort-order" class="sr-only">Sort order</label>
+                        <select id="sort-order" aria-label="Sort Order"
+                            class="w-full h-10 px-3 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 focus:ring-2 focus:border-blue-500">
+                            <option value="name_asc">Name (A–Z)</option>
+                            <option value="name_desc">Name (Z–A)</option>
+                            <option value="most_supported">Most Supported</option>
+                        </select>
+                    </div>
+                    <button id="clear-filters-btn" class="button-secondary h-10">Clear Filters</button>
+                </div>
+            </div>
+            <div class="filter-group mt-3" id="pillar-filters" aria-label="Filter by Pillar (Multi-select)">
+                <fieldset>
+                    <legend class="sr-only">Filter by Pillar</legend>
+                    <div id="pillar-chips-container" class="flex flex-wrap gap-2">
+                        <!-- Pillar chips rendered by JS -->
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </nav>
+
+    <main id="main-content" class="container mx-auto p-4">
+        <div id="results-info" class="mb-4 text-sm text-gray-600 dark:text-gray-400" aria-live="polite" role="status">
+        </div>
+
+        <div id="prompts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Prompt cards will be injected here by JavaScript -->
+        </div>
+
+        <div id="loading-indicator" class="flex justify-center items-center p-10">
+            <p>Loading prompts...</p>
+        </div>
+
+        <div id="error-message"
+            class="text-center p-10 bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-300 rounded-lg" hidden>
+            <h2 class="text-xl font-bold mb-2">Error Loading Data</h2>
+            <p>Could not load the prompt catalog.</p>
+        </div>
+
+        <div id="no-results-message" class="text-center p-10 bg-gray-100 dark:bg-gray-800 rounded-lg" hidden>
+            <h2 class="text-xl font-bold mb-2">No Matching Prompts</h2>
+            <p>No prompts match your current search and filter criteria.</p>
+        </div>
+    </main>
+
+    <footer class="footer mt-12 border-t border-gray-200 dark:border-gray-700">
+        <div class="container mx-auto px-4 py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+            <p>&copy; 2025 GIAC Prompts Catalog</p>
+        </div>
+    </footer>
+
+    <!-- Details Modal -->
+    <div id="details-modal-backdrop" class="fixed inset-0 bg-black bg-opacity-60 z-40 hidden" aria-hidden="true"></div>
+    <div id="details-modal" class="fixed inset-0 z-50 p-4 hidden" role="dialog" aria-modal="true"
+        aria-labelledby="modal-title">
+        <div
+            class="modal-content relative bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-3xl max-h-[90vh] mx-auto my-8 flex flex-col">
+            <div
+                class="modal-header flex justify-between items-center p-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 id="modal-title" class="text-lg font-semibold text-gray-900 dark:text-white">Prompt Details</h2>
+                <button id="modal-close-btn"
+                    class="modal-close-btn p-1 rounded-full text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-600 dark:hover:text-white"
+                    aria-label="Close details">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body overflow-y-auto p-6" id="modal-body-content">
+                <!-- Modal content injected by JS -->
+            </div>
+            <div
+                class="modal-footer flex justify-end items-center gap-3 p-4 border-t border-gray-200 dark:border-gray-700 mt-auto">
+                <button id="modal-copy-json-btn" class="button-secondary">Copy JSON</button>
+                <button id="modal-close-footer-btn" class="button-primary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        const catalogData = [
+            {
+                "id": "giac::dax-formatter",
+                "name": "Format DAX Code",
+                "description": "Cleanly formats a given DAX query according to best practices, improving readability and maintainability.",
+                "category": "dax-modeling",
+                "pillars": ["DAX", "Data Model"],
+                "tags": ["dax", "formatting", "dax-formatter", "code-style", "readability", "maintenance"],
+                "system": "You are an expert DAX code formatter. Your task is to take a raw DAX query and reformat it according to the canonical style guide, ensuring proper indentation, spacing, and function casing.",
+                "user_template": "Please format the following DAX query:\n\n```dax\n{{dax_query}}\n```",
+                "variables": ["dax_query"],
+                "examples": [
+                    {
+                        "input": "EVALUATE FILTER(SUMMARIZECOLUMNS('Date'[Year], \"Sales\", [Total Sales]), [Total Sales] > 500000)",
+                        "output_summary": "The DAX query is returned with proper indentation for EVALUATE, FILTER, and SUMMARIZECOLUMNS, with each function and argument on a new line for clarity."
+                    }
+                ],
+                "risk_level": "low",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "r_p-5-cfO_A",
+                    "video_title": "The DAX Formatter you should be using!",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2023-11-21T13:00:15Z",
+                    "url": "https://www.youtube.com/watch?v=r_p-5-cfO_A",
+                    "timestamp": { "start_sec": 65, "end_sec": 120 }
+                },
+                "supporting_sources": [],
+                "metadata": { "topics_covered": ["DAX Formatter", "Best Practices"], "segment_count": 1 }
+            },
+            {
+                "id": "giac::power-query-folding-indicators",
+                "name": "Check Power Query Folding Status",
+                "description": "Provides guidance on how to use Power Query's visual indicators to determine if query steps are successfully folding back to the data source.",
+                "category": "power-query-folding",
+                "pillars": ["Power Query", "Performance"],
+                "tags": ["power-query", "query-folding", "performance", "optimization", "data-source", "troubleshooting"],
+                "system": "You are a Power BI performance tuning expert, specializing in Power Query. Explain how to interpret the query folding indicators in the Power Query editor's 'Applied Steps' pane.",
+                "user_template": "How can I tell if my Power Query steps for the table '{{table_name}}' are folding correctly?",
+                "variables": ["table_name"],
+                "examples": [
+                    {
+                        "input": "How can I tell if my Power Query steps for the table 'FactSales' are folding correctly?",
+                        "output_summary": "Explains the meaning of the native query indicator, the not-folding indicator, and the potentially-folding indicator, and advises on right-clicking steps to view the native query."
+                    }
+                ],
+                "risk_level": "low",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "r-g_T-e_O-s",
+                    "video_title": "A Power BI feature you've never seen...",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2024-03-05T14:00:27Z",
+                    "url": "https://www.youtube.com/watch?v=r-g_T-e_O-s",
+                    "timestamp": { "start_sec": 150, "end_sec": 215 }
+                },
+                "supporting_sources": [
+                    { "youtube_id": "TOpxZAekqI0", "timestamp": { "start_sec": 1800, "end_sec": 1845 } }
+                ],
+                "metadata": { "topics_covered": ["Query Folding", "Power Query Editor", "Performance Tuning"], "segment_count": 2 }
+            },
+            {
+                "id": "giac::fabric-workspace-planning",
+                "name": "Plan a Microsoft Fabric Workspace Strategy",
+                "description": "Outlines key considerations for structuring workspaces in Microsoft Fabric, covering domain separation, environment segregation (dev/test/prod), and security boundaries.",
+                "category": "fabric-architecture",
+                "pillars": ["Fabric", "Governance"],
+                "tags": ["fabric", "workspace", "governance", "architecture", "security", "devops", "ci-cd"],
+                "system": "You are a data architect specializing in Microsoft Fabric. Provide a strategic framework for organizing Fabric workspaces.",
+                "user_template": "What is the best practice for setting up workspaces in Microsoft Fabric for our organization, which has {{department_count}} departments and requires separate dev, test, and prod environments?",
+                "variables": ["department_count"],
+                "examples": [
+                    {
+                        "input": "What is the best practice for setting up workspaces in Microsoft Fabric for our organization, which has 3 departments and requires separate dev, test, and prod environments?",
+                        "output_summary": "Recommends creating workspaces per business domain (e.g., Sales, Finance) and using prefixes or suffixes for environment separation (e.g., 'Sales - DEV'). Discusses capacity planning and access control strategies."
+                    }
+                ],
+                "risk_level": "medium",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "y7TCsbM73YU",
+                    "video_title": "STOP creating workspaces in Power BI and Microsoft Fabric?!",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2024-05-28T12:00:19Z",
+                    "url": "https://www.youtube.com/watch?v=y7TCsbM73YU",
+                    "timestamp": { "start_sec": 240, "end_sec": 330 }
+                },
+                "supporting_sources": [],
+                "metadata": { "topics_covered": ["Fabric Workspaces", "Governance", "CI/CD"], "segment_count": 1 }
+            },
+            {
+                "id": "giac::identify-performance-bottlenecks",
+                "name": "Identify Performance Bottlenecks",
+                "description": "Uses Performance Analyzer in Power BI Desktop to identify slow visuals or DAX measures that are causing report performance issues.",
+                "category": "performance",
+                "pillars": ["Performance", "DAX", "Reports"],
+                "tags": ["performance", "performance-analyzer", "dax", "visuals", "optimization", "reporting", "troubleshooting"],
+                "system": "You are a Power BI performance optimization expert. Guide the user through the process of using the Performance Analyzer to find and diagnose performance bottlenecks in their Power BI report.",
+                "user_template": "My Power BI report named '{{report_name}}' is slow to load. How can I find out which visuals are the slowest?",
+                "variables": ["report_name"],
+                "examples": [
+                    {
+                        "input": "My Power BI report named 'Quarterly Sales Review' is slow to load. How can I find out which visuals are the slowest?",
+                        "output_summary": "Provides step-by-step instructions: 1. Open Performance Analyzer from the View tab. 2. Click 'Start recording'. 3. Interact with the report or refresh visuals. 4. Analyze the results, sorting by 'Total time' to identify the slowest elements. 5. Explains how to copy the DAX query for further analysis."
+                    }
+                ],
+                "risk_level": "low",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "3lAfJ_5s5Xw",
+                    "video_title": "Is your Power BI report SLOW? DO THIS!",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2023-08-15T12:00:25Z",
+                    "url": "https://www.youtube.com/watch?v=3lAfJ_5s5Xw",
+                    "timestamp": { "start_sec": 112, "end_sec": 190 }
+                },
+                "supporting_sources": [],
+                "metadata": { "topics_covered": ["Performance Analyzer", "DAX Optimization", "Visual Rendering"], "segment_count": 1 }
+            },
+            {
+                "id": "giac::use-calculation-groups",
+                "name": "Implement Calculation Groups for Time Intelligence",
+                "description": "Reduces measure proliferation by creating a calculation group to handle common time intelligence calculations like YTD, MTD, and YoY.",
+                "category": "dax-modeling",
+                "pillars": ["DAX", "Data Model", "Performance"],
+                "tags": ["dax", "calculation-groups", "time-intelligence", "modeling", "optimization", "tabular-editor"],
+                "system": "You are an expert in advanced DAX modeling. Explain how to create a calculation group using Tabular Editor to simplify time intelligence calculations and reduce the number of explicit measures in a Power BI model.",
+                "user_template": "I have 20 base measures and I need to create YTD, MTD, and QTD variations for each. How can I use calculation groups to avoid creating 60 new measures in my '{{model_name}}' model?",
+                "variables": ["model_name"],
+                "examples": [
+                    {
+                        "input": "I have 20 base measures and I need to create YTD, MTD, and QTD variations for each. How can I use calculation groups to avoid creating 60 new measures in my 'Financials' model?",
+                        "output_summary": "Provides a high-level plan: 1. Connect to the model using Tabular Editor. 2. Create a new Calculation Group named 'Time Intelligence'. 3. Add Calculation Items for 'Current', 'MTD', 'QTD', and 'YTD'. 4. In each item, use DAX functions like `CALCULATE(SELECTEDMEASURE(), DATESMTD('Date'[Date]))`. 5. Save changes back to the model. Now a slicer can be used to switch between calculations for any base measure."
+                    }
+                ],
+                "risk_level": "medium",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "gQlO4_e0M4c",
+                    "video_title": "Power BI Calculation Groups are a MUST USE!",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2024-02-13T14:00:07Z",
+                    "url": "https://www.youtube.com/watch?v=gQlO4_e0M4c",
+                    "timestamp": { "start_sec": 300, "end_sec": 420 }
+                },
+                "supporting_sources": [],
+                "metadata": { "topics_covered": ["Calculation Groups", "DAX", "Time Intelligence", "Tabular Editor"], "segment_count": 1 }
+            },
+            {
+                "id": "giac::dynamic-data-storytelling",
+                "name": "Create a Dynamic Storytelling Report",
+                "description": "Guides on using bookmarks and button navigation in Power BI to create an interactive, guided narrative for data storytelling.",
+                "category": "general",
+                "pillars": ["Reports", "Visuals"],
+                "tags": ["storytelling", "bookmarks", "navigation", "ux", "reporting", "power-bi-desktop"],
+                "system": "You are a Power BI report design and UX specialist. Explain how to combine bookmarks, buttons, and the selection pane to build a guided analytical path for report consumers.",
+                "user_template": "How can I create a 'story mode' in my Power BI report that walks users through key insights step-by-step?",
+                "variables": [],
+                "examples": [
+                    {
+                        "input": "How can I create a 'story mode' in my Power BI report that walks users through key insights step-by-step?",
+                        "output_summary": "Outlines the process: 1. Design different states of your report page, using the Selection Pane to show/hide visuals for each state. 2. For each state, create a bookmark, ensuring you disable 'Data' and enable 'Display'. 3. Add 'Next' and 'Previous' buttons to the canvas. 4. Assign the appropriate bookmark action to each button. 5. Group buttons and visuals to manage visibility across the narrative."
+                    }
+                ],
+                "risk_level": "low",
+                "provenance": "giac",
+                "source": {
+                    "youtube_id": "M73s_1-p2A4",
+                    "video_title": "Power BI Storytelling is NOT what you think...",
+                    "channel": "Guy in a Cube",
+                    "published_at": "2023-10-10T12:00:23Z",
+                    "url": "https://www.youtube.com/watch?v=M73s_1-p2A4",
+                    "timestamp": { "start_sec": 450, "end_sec": 580 }
+                },
+                "supporting_sources": [],
+                "metadata": { "topics_covered": ["Bookmarks", "Buttons", "Selection Pane", "UX Design"], "segment_count": 1 }
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const state = {
+                allPrompts: [],
+                filteredPrompts: [],
+                categories: new Set(),
+                pillars: new Set(),
+                filters: {
+                    search: '',
+                    category: '',
+                    pillars: new Set(),
+                },
+                sortOrder: 'name_asc',
+                isLoading: true,
+            };
+
+            const dom = {
+                grid: document.getElementById('prompts-grid'),
+                searchInput: document.getElementById('search-input'),
+                categoryFilter: document.getElementById('category-filter'),
+                pillarFiltersContainer: document.getElementById('pillar-chips-container'),
+                sortOrder: document.getElementById('sort-order'),
+                resultsInfo: document.getElementById('results-info'),
+                statsSummary: document.getElementById('stats-summary'),
+                loadingIndicator: document.getElementById('loading-indicator'),
+                noResultsMessage: document.getElementById('no-results-message'),
+                errorMessage: document.getElementById('error-message'),
+                clearFiltersBtn: document.getElementById('clear-filters-btn'),
+                modal: document.getElementById('details-modal'),
+                modalBackdrop: document.getElementById('details-modal-backdrop'),
+                modalTitle: document.getElementById('modal-title'),
+                modalBody: document.getElementById('modal-body-content'),
+                modalCloseBtn: document.getElementById('modal-close-btn'),
+                modalCloseFooterBtn: document.getElementById('modal-close-footer-btn'),
+                modalCopyJsonBtn: document.getElementById('modal-copy-json-btn'),
+            };
+
+            const debounce = (func, delay) => {
+                let timeoutId;
+                return (...args) => {
+                    clearTimeout(timeoutId);
+                    timeoutId = setTimeout(() => func.apply(this, args), delay);
+                };
+            };
+
+            const loadData = () => {
+                try {
+                    state.allPrompts = catalogData;
+                    state.isLoading = false;
+                } catch (error) {
+                    console.error("Failed to load embedded prompts:", error);
+                    state.isLoading = false;
+                    showError();
+                }
+            };
+
+            const processData = () => {
+                state.allPrompts.forEach(prompt => {
+                    if (prompt.category) state.categories.add(prompt.category);
+                    if (prompt.pillars) prompt.pillars.forEach(p => state.pillars.add(p));
+                });
+                const totalVideos = new Set(state.allPrompts.map(p => p.source.youtube_id)).size;
+                dom.statsSummary.textContent = `${state.allPrompts.length} Prompts | ${totalVideos} Videos`;
+            };
+
+            const populateFilters = () => {
+                const sortedCategories = [...state.categories].sort();
+                sortedCategories.forEach(cat => {
+                    const option = document.createElement('option');
+                    option.value = cat;
+                    option.textContent = cat.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    dom.categoryFilter.appendChild(option);
+                });
+                const sortedPillars = [...state.pillars].sort();
+                dom.pillarFiltersContainer.innerHTML = sortedPillars.map(pillar => `
+          <button class="pillar-chip" role="checkbox" aria-pressed="false" data-pillar="${pillar}">
+              ${pillar}
+          </button>
+      `).join('');
+            };
+
+            const applyFiltersAndSort = () => {
+                const { search, category, pillars } = state.filters;
+                const searchLower = search.toLowerCase();
+
+                state.filteredPrompts = state.allPrompts.filter(prompt => {
+                    const categoryMatch = !category || prompt.category === category;
+                    const pillarMatch = pillars.size === 0 || prompt.pillars?.some(p => pillars.has(p));
+                    const searchMatch = !searchLower ||
+                        prompt.name.toLowerCase().includes(searchLower) ||
+                        prompt.description.toLowerCase().includes(searchLower) ||
+                        prompt.tags?.some(tag => tag.toLowerCase().includes(searchLower));
+
+                    return categoryMatch && pillarMatch && searchMatch;
+                });
+
+                sortPrompts();
+                render();
+                updateURL();
+            };
+
+            const sortPrompts = () => {
+                state.filteredPrompts.sort((a, b) => {
+                    switch (state.sortOrder) {
+                        case 'name_desc':
+                            return b.name.localeCompare(a.name);
+                        case 'most_supported':
+                            return (b.supporting_sources?.length || 0) - (a.supporting_sources?.length || 0);
+                        case 'name_asc':
+                        default:
+                            return a.name.localeCompare(b.name);
+                    }
+                });
+            };
+
+            const render = () => {
+                dom.loadingIndicator.hidden = true;
+                if (state.filteredPrompts.length === 0 && !state.isLoading) {
+                    dom.noResultsMessage.hidden = false;
+                    dom.grid.innerHTML = '';
+                    dom.resultsInfo.textContent = 'Found 0 prompts.';
+                } else {
+                    dom.noResultsMessage.hidden = true;
+                    dom.resultsInfo.textContent = `Found ${state.filteredPrompts.length} of ${state.allPrompts.length} prompts.`;
+                    dom.grid.innerHTML = state.filteredPrompts.map(prompt => createCard(prompt)).join('');
+                }
+            };
+
+            const createCard = (prompt) => {
+                const tags = prompt.tags?.slice(0, 3).map(tag => `<span class="tag">${tag}</span>`).join('') || '';
+                return `
+        <div class="prompt-card" data-id="${prompt.id}" tabindex="0" role="button" aria-label="View details for ${prompt.name}">
+          <div>
+            <span class="text-xs font-semibold uppercase tracking-wider text-blue-500 dark:text-blue-400">${prompt.category.replace(/-/g, ' ')}</span>
+            <h3 class="mt-1">${prompt.name}</h3>
+            <p class="line-clamp-3">${prompt.description}</p>
+          </div>
+          <div class="card-footer">
+            <div class="tags-container">${tags}</div>
+          </div>
+        </div>
+      `;
+            };
+
+            const showError = (message) => {
+                dom.loadingIndicator && (dom.loadingIndicator.hidden = true);
+                if (dom.errorMessage) {
+                    if (message) {
+                        const p = dom.errorMessage.querySelector('p');
+                        if (p) p.textContent = message;
+                    }
+                    dom.errorMessage.hidden = false;
+                } else {
+                    console.error(message || 'Unknown error initializing page.');
+                }
+            };
+
+            const updateURL = () => {
+                const params = new URLSearchParams();
+                if (state.filters.search) params.set('search', state.filters.search);
+                if (state.filters.category) params.set('category', state.filters.category);
+                if (state.sortOrder !== 'name_asc') params.set('sort', state.sortOrder);
+                if (state.filters.pillars.size > 0) params.set('pillars', [...state.filters.pillars].join(','));
+
+                const newUrl = `${window.location.pathname}?${params.toString()}`;
+
+                try {
+                    window.history.replaceState({ path: newUrl }, '', newUrl);
+                } catch (e) {
+                    console.warn("Could not update URL: ", e.message);
+                }
+            };
+
+            const readURL = () => {
+                const params = new URLSearchParams(window.location.search);
+                state.filters.search = params.get('search') || '';
+                state.filters.category = params.get('category') || '';
+                state.sortOrder = params.get('sort') || 'name_asc';
+                const pillars = params.get('pillars');
+                if (pillars) {
+                    state.filters.pillars = new Set(pillars.split(','));
+                }
+
+                dom.searchInput.value = state.filters.search;
+                dom.categoryFilter.value = state.filters.category;
+                dom.sortOrder.value = state.sortOrder;
+                dom.pillarFiltersContainer.querySelectorAll('.pillar-chip').forEach(chip => {
+                    const pillar = chip.dataset.pillar;
+                    if (state.filters.pillars.has(pillar)) {
+                        chip.setAttribute('aria-pressed', 'true');
+                    }
+                });
+            };
+
+            const openModal = (promptId) => {
+                const prompt = state.allPrompts.find(p => p.id === promptId);
+                if (!prompt) return;
+
+                dom.modalTitle.textContent = prompt.name;
+                const allSources = [prompt.source, ...(prompt.supporting_sources || [])];
+                const sourcesHTML = allSources.map((source, index) => {
+                    const url = `https://www.youtube.com/watch?v=${source.youtube_id}&t=${source.timestamp.start_sec}s`;
+                    const title = index === 0 ? prompt.source.video_title : `Supporting source ${index}`;
+                    return `
+              <li>
+                  <a href="${url}" target="_blank" rel="noopener noreferrer" class="source-link">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"></path></svg>
+                      <span>${title} (at ${Math.floor(source.timestamp.start_sec / 60)}m ${source.timestamp.start_sec % 60}s)</span>
+                  </a>
+              </li>`;
+                }).join('');
+
+                dom.modalBody.innerHTML = `
+        <p class="mb-4">${prompt.description}</p>
+        
+        <h3>Details</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+          <div><strong>Category:</strong> ${prompt.category}</div>
+          <div><strong>Pillars:</strong> ${prompt.pillars.join(', ')}</div>
+          <div><strong>Risk Level:</strong> <span class="capitalize">${prompt.risk_level}</span></div>
+        </div>
+        
+        <h3>User Prompt Template</h3>
+        <pre><code>${prompt.user_template}</code></pre>
+        
+        ${prompt.system ? `<h3>System Prompt</h3><pre><code>${prompt.system}</code></pre>` : ''}
+        
+        <h3>Sources</h3>
+        <ul class="list-disc list-inside space-y-2" style="list-style-type: disc; padding-left: 1.25rem;">${sourcesHTML}</ul>
+      `;
+
+                dom.modalCopyJsonBtn.onclick = () => {
+                    navigator.clipboard.writeText(JSON.stringify(prompt, null, 2))
+                        .then(() => {
+                            const originalText = dom.modalCopyJsonBtn.textContent;
+                            dom.modalCopyJsonBtn.textContent = 'Copied!';
+                            setTimeout(() => dom.modalCopyJsonBtn.textContent = originalText, 2000);
+                        });
+                };
+
+                document.body.style.overflow = 'hidden';
+                dom.modalBackdrop.hidden = false;
+                dom.modal.hidden = false;
+                dom.modal.focus();
+            };
+
+            const closeModal = () => {
+                document.body.style.overflow = '';
+                dom.modalBackdrop.hidden = true;
+                dom.modal.hidden = true;
+            };
+
+            const clearFilters = () => {
+                state.filters.search = '';
+                state.filters.category = '';
+                state.filters.pillars.clear();
+                state.sortOrder = 'name_asc';
+
+                dom.searchInput.value = '';
+                dom.categoryFilter.value = '';
+                dom.sortOrder.value = 'name_asc';
+                dom.pillarFiltersContainer.querySelectorAll('.pillar-chip').forEach(chip => {
+                    chip.setAttribute('aria-pressed', 'false');
+                });
+                applyFiltersAndSort();
+            };
+
+            // Event Listeners (null-safe in case markup is incomplete)
+            if (dom.searchInput) {
+                dom.searchInput.addEventListener('input', debounce((e) => {
+                    state.filters.search = e.target.value;
+                    applyFiltersAndSort();
+                }, 200));
+            }
+
+            if (dom.categoryFilter) {
+                dom.categoryFilter.addEventListener('change', (e) => {
+                    state.filters.category = e.target.value;
+                    applyFiltersAndSort();
+                });
+            }
+
+            if (dom.sortOrder) {
+                dom.sortOrder.addEventListener('change', (e) => {
+                    state.sortOrder = e.target.value;
+                    sortPrompts();
+                    render();
+                    updateURL();
+                });
+            }
+
+            if (dom.pillarFiltersContainer) {
+                dom.pillarFiltersContainer.addEventListener('click', (e) => {
+                    const chip = e.target.closest('.pillar-chip');
+                    if (!chip) return;
+
+                    const pillar = chip.dataset.pillar;
+                    const isPressed = chip.getAttribute('aria-pressed') === 'true';
+
+                    chip.setAttribute('aria-pressed', String(!isPressed));
+                    if (!isPressed) {
+                        state.filters.pillars.add(pillar);
+                    } else {
+                        state.filters.pillars.delete(pillar);
+                    }
+                    applyFiltersAndSort();
+                });
+            }
+
+            if (dom.clearFiltersBtn) {
+                dom.clearFiltersBtn.addEventListener('click', clearFilters);
+            }
+
+            if (dom.grid) {
+                dom.grid.addEventListener('click', (e) => {
+                    const card = e.target.closest('.prompt-card');
+                    if (card) openModal(card.dataset.id);
+                });
+
+                dom.grid.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        const card = e.target.closest('.prompt-card');
+                        if (card) {
+                            e.preventDefault();
+                            openModal(card.dataset.id);
+                        }
+                    }
+                });
+            }
+
+            if (dom.modalCloseBtn) dom.modalCloseBtn.addEventListener('click', closeModal);
+            if (dom.modalCloseFooterBtn) dom.modalCloseFooterBtn.addEventListener('click', closeModal);
+            if (dom.modalBackdrop) dom.modalBackdrop.addEventListener('click', closeModal);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !dom.modal.hidden) {
+                    closeModal();
+                }
+            });
+
+            // Main execution
+            const init = () => {
+                try {
+                    // Ensure critical containers exist
+                    if (!dom.grid || !dom.loadingIndicator) {
+                        showError('Required containers are missing from the page markup.');
+                        return;
+                    }
+                    loadData();
+                    if (state.allPrompts.length > 0) {
+                        processData();
+                        populateFilters();
+                        readURL();
+                        applyFiltersAndSort();
+                    } else {
+                        showError('No prompts available to display.');
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showError('An error occurred during initialization.');
+                }
+            };
+
+            init();
+        });
+    </script>
+</body>
+
+</html>
