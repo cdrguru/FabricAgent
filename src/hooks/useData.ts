@@ -163,15 +163,10 @@ export const useData = () => {
           }
         };
 
-        // URLs for embedded local assets (ensures availability in production build)
-        const localCatalogueURL = (await import('../prompt-catalog.json?url')).default as string;
-        const localWorkforceURL = (await import('../workforce_prompts.json?url')).default as string;
-        const localDagURL = (await import('../dag.json?url')).default as string;
-
-        // Try configured endpoints first, then fallback to embedded local assets
+        // Try configured endpoints first, then fallback to public runtime copies
         const [catalogueDataRaw, workforceDataRaw] = await Promise.all([
-          fetchJson(config.catalogue).then(d => d ?? fetchJson(localCatalogueURL)),
-          fetchJson(config.workforce).then(d => d ?? fetchJson(localWorkforceURL)),
+          fetchJson(config.catalogue).then(d => d ?? fetchJson('/prompt-catalog.json')),
+          fetchJson(config.workforce).then(d => d ?? fetchJson('/workforce_prompts.json')),
         ]);
 
         if (!catalogueDataRaw) console.warn(`Catalogue not available from ${config.catalogue} or local fallback.`);
@@ -194,9 +189,9 @@ export const useData = () => {
 
         dagData = await loadDag(config.dag);
         if (!dagData) {
-          console.info('Attempting embedded DAG fallback…');
-          dagData = await loadDag(localDagURL);
-          if (dagData) dagSourceSuffix = ' (DAG: local fallback)';
+          console.info('Attempting public DAG fallback…');
+          dagData = await loadDag('/dag.json');
+          if (dagData) dagSourceSuffix = ' (DAG: public fallback)';
         }
 
         if (dagSourceSuffix) {
