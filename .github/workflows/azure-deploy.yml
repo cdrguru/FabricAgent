@@ -1,0 +1,133 @@
+name: Deploy FabricAgent to Azure
+run-name: "Deploy: ${{ github.sha || github.run_id }} — ${{ github.event.head_commit.message }}"
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - 'public/**'
+      - 'schemas/**'
+      - 'prompts/**'
+      - '.github/workflows/azure-deploy.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.19.0'
+
+      # Build frontend
+      - name: Build frontend
+        working-directory: src
+        env:
+          VITE_HELP_URL: ${{ vars.VITE_HELP_URL }}
+        run: |
+          npm install
+          # Workaround for rollup native binary resolution on Linux runners
+          npm install @rollup/rollup-linux-x64-gnu --no-save || true
+          npm run build
+
+      # Assemble release
+      - name: Assemble release (self-contained)
+        run: |
+          rm -f release.zip
+          mkdir -p release
+          cp -r src/dist/* release/
+
+          # Tiny SPA server for deep-link routing and health
+          cat > release/server.js <<'JS'
+          import express from 'express';
+          import path from 'path';
+          import { fileURLToPath } from 'url';
+          const __filename = fileURLToPath(import.meta.url);
+          const __dirname = path.dirname(__filename);
+          const app = express();
+          app.use(express.static(__dirname));
+          app.get('/health', (_req,res)=>res.json({ok:true, ts:new Date().toISOString()}));
+          app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+          const port = process.env.PORT || 8080;
+          app.listen(port, () => console.log(`SPA server listening on ${port}`));
+          JS
+
+          cat > release/package.json <<'JSON'
+          {
+            "name": "fabricagent-spa",
+            "private": true,
+            "version": "0.1.0",
+            "type": "module",
+            "scripts": { "start": "node server.js" },
+            "engines": { "node": ">=20" },
+            "dependencies": { "express": "^4.19.2" }
+          }
+          JSON
+
+          npm --prefix release install --omit=dev
+          printf '{"version":"%s","runId":"%s","builtAt":"%s"}\n' \
+            "${GITHUB_SHA}" "${GITHUB_RUN_ID}" "$(date -u +%FT%TZ)" > release/version.json
+
+          (cd release && zip -r ../release.zip .)
+
+      # Azure login via OIDC
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          audience: api://AzureADTokenExchange
+
+      - name: Debug context
+        run: |
+          az account show
+          az webapp show -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "${{ vars.AZURE_WEBAPP_NAME }}" --query "{name:name, hostName:defaultHostName, kind:kind, linuxFx:siteConfig.linuxFxVersion}" -o json
+
+      # Optional: ensure Node version/app settings on the Web App
+      - name: Configure app settings
+        run: |
+          az webapp config appsettings set \
+            -g "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            -n "${{ vars.AZURE_WEBAPP_NAME }}" \
+            --settings WEBSITE_NODE_DEFAULT_VERSION=~20 WEBSITE_RUN_FROM_PACKAGE=1
+
+      - name: Set startup command (npm start)
+        run: |
+          az webapp config set \
+            -g "${{ vars.AZURE_RESOURCE_GROUP }}" \
+            -n "${{ vars.AZURE_WEBAPP_NAME }}" \
+            --startup-file "npm start"
+          # Give SCM container a moment to settle before deploy to avoid restart race
+          sleep 10
+
+      # Deploy the prebuilt folder
+      - name: Deploy to App Service (Linux)
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          resource-group-name: ${{ vars.AZURE_RESOURCE_GROUP }}
+          package: release.zip
+
+      - name: Smoke test
+        run: |
+          HN=$(az webapp show -g "${{ vars.AZURE_RESOURCE_GROUP }}" -n "${{ vars.AZURE_WEBAPP_NAME }}" --query defaultHostName -o tsv)
+          echo "Host: https://${HN}"
+          echo "Version:"
+          curl -fsS "https://${HN}/version.json" | jq .
+          echo "Root headers:"
+          curl -fsSI "https://${HN}/" | sed -n '1,12p'
