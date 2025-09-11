@@ -8,25 +8,26 @@ pushd src >/dev/null
 # Note: We'll set proxy vars below if HTTPS_PROXY_URL is provided as a secret
 unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy NO_PROXY no_proxy
 unset NPM_CONFIG_PRODUCTION npm_config_production NPM_CONFIG_OMIT npm_config_omit
+# Also unset any npm config env vars that might be inherited
+unset npm_config_proxy npm_config_https_proxy
 # Clear any existing npm proxy configs (will be reset if HTTPS_PROXY_URL is set)
 npm config delete proxy 2>/dev/null || true
 npm config delete https-proxy 2>/dev/null || true
+npm config delete http-proxy 2>/dev/null || true
 
 # 1) Optional enterprise proxy (provided via Codex Secrets)
-#    - If HTTPS_PROXY_URL is set, export both upper/lower variants and npm-compatible vars.
+#    - If HTTPS_PROXY_URL is set, export environment variables for tools that need them
 if [[ "${HTTPS_PROXY_URL:-}" != "" ]]; then
   export HTTPS_PROXY="${HTTPS_PROXY_URL}"
   export HTTP_PROXY="${HTTPS_PROXY}"
   export https_proxy="${HTTPS_PROXY}"
   export http_proxy="${HTTP_PROXY}"
-  # Use npm config set instead of deprecated env vars
-  npm config set https-proxy "${HTTPS_PROXY}" >/dev/null 2>&1 || true
-  npm config set proxy "${HTTP_PROXY}" >/dev/null 2>&1 || true
   # Common safe NO_PROXY baseline (add your internal domains/subnets if needed)
   export NO_PROXY="localhost,127.0.0.1,::1"
 else
   # Ensure no proxy env vars are set when not using enterprise proxy
   unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY
+  unset npm_config_proxy npm_config_https_proxy npm_config_http_proxy
 fi
 
 # 2) Optional corporate root CA
@@ -56,16 +57,26 @@ elif [[ -n "${CORP_CA_B64:-}" ]]; then
 fi
 
 # 3) Resilient npm networking + tidy config
+# Clear npm cache to remove any stale proxy configs
+npm cache clean --force >/dev/null 2>&1 || true
+
 npm config set registry "https://registry.npmjs.org/"
 npm config set fetch-retries 5
 npm config set fetch-retry-factor 2
 npm config set fetch-retry-mintimeout 2000
 npm config set fetch-retry-maxtimeout 20000
 npm config set prefer-online true || true
-# Only delete proxy configs if not set by enterprise proxy above
-if [[ "${HTTPS_PROXY_URL:-}" == "" ]]; then
-  npm config delete proxy 2>/dev/null || true
-  npm config delete https-proxy 2>/dev/null || true
+
+# Comprehensive proxy config cleanup (addresses npm 11.x warnings)
+npm config delete proxy 2>/dev/null || true
+npm config delete https-proxy 2>/dev/null || true
+npm config delete http-proxy 2>/dev/null || true
+npm config delete noproxy 2>/dev/null || true
+
+# Only set proxy configs if enterprise proxy is provided
+if [[ "${HTTPS_PROXY_URL:-}" != "" ]]; then
+  npm config set https-proxy "${HTTPS_PROXY_URL}" >/dev/null 2>&1 || true
+  npm config set proxy "${HTTPS_PROXY_URL}" >/dev/null 2>&1 || true
 fi
 
 # 4) Preflight reachability (non-fatal; hints if we lack a proxy)
