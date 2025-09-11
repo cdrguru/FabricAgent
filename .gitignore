@@ -27,3 +27,8 @@ here/
 .speckit/*
 src/.codex_lock.sha256
 src/.certs/
+
+# Cloudflare Worker artifacts
+wrangler.toml
+.worker-url
+.wrangler/
