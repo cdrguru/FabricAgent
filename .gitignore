@@ -1,9 +1,27 @@
 node_modules
 dist
+
+# Env and OS files
 .env
 .env.*
 .DS_Store
+
+# Build and coverage artifacts
 release
 coverage
 *.log
 *.pid
+
+# Personal/workbench directories to avoid sharing WIP
+scripts
+tools
+tests
+topics
+workflows
+knowledge
+dags
+myprompts
+.reports
+here/
+.kiro/*
+.speckit/*
