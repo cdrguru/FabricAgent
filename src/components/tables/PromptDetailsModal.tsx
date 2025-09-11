@@ -3,6 +3,7 @@ import { Prompt } from '../../types';
 import { PillarBadge } from '../ui/PillarBadge';
 import { GROUP_COLORS } from '../../constants';
 import { isFavorite, toggleFavorite, getRating, setRating, getComment, setComment } from '../../utils/storage';
+import { rewriteText } from '../../services/rewriteService';
 import { trapFocus } from '../../utils/focusTrap';
 
 interface PromptDetailsModalProps {
@@ -44,6 +45,14 @@ export const PromptDetailsModal: React.FC<PromptDetailsModalProps> = ({ prompt, 
     const lastActiveRef = React.useRef<HTMLElement | null>(null);
     const [fav, setFav] = React.useState<boolean>(false);
     const containerRef = React.useRef<HTMLDivElement | null>(null);
+    const [rwOpen, setRwOpen] = React.useState<boolean>(false);
+    const [rwTarget, setRwTarget] = React.useState<'prompt' | 'system' | 'user_template' | 'summary'>('prompt');
+    const [rwInput, setRwInput] = React.useState<string>('');
+    const [rwStyle, setRwStyle] = React.useState<string>('simplify');
+    const [rwModel, setRwModel] = React.useState<string>((import.meta.env.VITE_AZURE_OPENAI_DEPLOYMENT as string) || 'gpt-5-mini');
+    const [rwBusy, setRwBusy] = React.useState<boolean>(false);
+    const [rwOut, setRwOut] = React.useState<string>('');
+    const [rwErr, setRwErr] = React.useState<string>('');
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -73,6 +82,18 @@ export const PromptDetailsModal: React.FC<PromptDetailsModalProps> = ({ prompt, 
         return () => window.removeEventListener('fa:favorites-changed', handler);
     }, [prompt]);
 
+    // Seed rewrite input based on target selection
+    useEffect(() => {
+        if (!prompt) return;
+        const seed = rwTarget === 'prompt' ? (prompt.prompt || '')
+                    : rwTarget === 'system' ? (prompt.system || '')
+                    : rwTarget === 'user_template' ? (prompt.user_template || '')
+                    : (prompt.summary || prompt.description || '');
+        setRwInput(seed);
+        setRwOut('');
+        setRwErr('');
+    }, [rwTarget, prompt, rwOpen]);
+
     if (!prompt) return null;
 
     const getYouTubeId = (url: string | undefined): string | null => {
@@ -101,6 +122,14 @@ export const PromptDetailsModal: React.FC<PromptDetailsModalProps> = ({ prompt, 
                 <div className="flex justify-between items-center p-4 border-b border-slate-200">
                     <h3 id="prompt-modal-title" className="text-lg font-bold text-slate-800">{prompt.name || prompt.id}</h3>
                     <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setRwOpen(o => !o)}
+                        className="h-9 w-9 rounded-md flex items-center justify-center hover:bg-slate-100"
+                        aria-label="It depends — rewrite"
+                        title="It depends — rewrite"
+                      >
+                        <i className="fas fa-wand-magic-sparkles text-indigo-500" aria-hidden="true"></i>
+                      </button>
                       <button
                         onClick={() => setFav(toggleFavorite(prompt.id))}
                         className="h-9 w-9 rounded-md flex items-center justify-center hover:bg-slate-100"
@@ -203,6 +232,71 @@ export const PromptDetailsModal: React.FC<PromptDetailsModalProps> = ({ prompt, 
                          {prompt.system && <PromptBlock title="System Message" content={prompt.system} />}
                          {prompt.user_template && <PromptBlock title="User Template" content={prompt.user_template} />}
                     </div>
+
+                    {/* It Depends — Rewrite */}
+                    {rwOpen && (
+                      <div className="mt-4 border border-slate-200 rounded-lg p-3 bg-slate-50">
+                        <div className="font-semibold text-slate-700 mb-2">It depends — Rewrite</div>
+                        <div className="grid sm:grid-cols-2 gap-2">
+                          <label className="text-xs text-slate-600">Source field
+                            <select value={rwTarget} onChange={e => setRwTarget(e.target.value as any)} className="mt-1 w-full text-sm border border-slate-300 rounded px-2 py-1 bg-white">
+                              <option value="prompt">Full Prompt</option>
+                              <option value="system">System Message</option>
+                              <option value="user_template">User Template</option>
+                              <option value="summary">Summary</option>
+                            </select>
+                          </label>
+                          <div className="flex items-end gap-2">
+                            <label className="text-xs text-slate-600">Style
+                              <select value={rwStyle} onChange={e => setRwStyle(e.target.value)} className="mt-1 w-full text-sm border border-slate-300 rounded px-2 py-1 bg-white">
+                                <option value="simplify">Simplify</option>
+                                <option value="shorten">Shorten</option>
+                                <option value="professional">Professional</option>
+                                <option value="friendly">Friendly</option>
+                              </select>
+                            </label>
+                            <label className="text-xs text-slate-600">Model
+                              <select value={rwModel} onChange={e => setRwModel(e.target.value)} className="mt-1 w-full text-sm border border-slate-300 rounded px-2 py-1 bg-white">
+                                <option value="gpt-5-mini">gpt-5-mini</option>
+                                <option value="gpt-5">gpt-5</option>
+                              </select>
+                            </label>
+                            <button
+                              disabled={rwBusy || !rwInput.trim()}
+                              onClick={async () => {
+                                setRwBusy(true); setRwErr(''); setRwOut('');
+                                try {
+                                  const instruction = rwStyle === 'shorten'
+                                    ? 'Rewrite with fewer words while preserving key meaning.'
+                                    : rwStyle === 'professional'
+                                    ? 'Rewrite with a concise, professional tone for executive stakeholders.'
+                                    : rwStyle === 'friendly'
+                                    ? 'Rewrite in a friendly, approachable tone.'
+                                    : 'Rewrite for clarity; remove fluff; preserve technical details.';
+                                  const out = await rewriteText({ text: rwInput, instruction, deployment: rwModel });
+                                  setRwOut(out || '');
+                                } catch (e: any) {
+                                  setRwErr(e?.message || String(e));
+                                } finally { setRwBusy(false); }
+                              }}
+                              className="text-xs h-8 px-3 rounded-md bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50"
+                              title="Rewrite"
+                            >{rwBusy ? 'Rewriting…' : 'Rewrite'}</button>
+                          </div>
+                        </div>
+                        <textarea value={rwInput} onChange={e => setRwInput(e.target.value)} className="mt-2 w-full border border-slate-300 rounded p-2 text-sm" rows={5} />
+                        {rwErr && <div className="mt-2 text-xs text-red-600">{rwErr}</div>}
+                        {rwOut && (
+                          <div className="mt-2">
+                            <div className="text-xs uppercase tracking-wide text-slate-500 mb-1">Rewritten</div>
+                            <pre className="text-sm whitespace-pre-wrap break-words border border-slate-200 rounded p-2 bg-white">{rwOut}</pre>
+                            <div className="mt-2 flex items-center gap-2">
+                              <button onClick={() => navigator.clipboard.writeText(rwOut)} className="text-xs px-2 py-1 rounded-md bg-white border border-slate-300 hover:bg-slate-100">Copy</button>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {/* Examples (few_shots) */}
                     {!!(prompt.few_shots && prompt.few_shots.length) && (

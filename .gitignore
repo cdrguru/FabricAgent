@@ -32,3 +32,4 @@ src/.certs/
 wrangler.toml
 .worker-url
 .wrangler/
+start_proxy.sh

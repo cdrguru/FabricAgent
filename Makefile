@@ -14,6 +14,7 @@ help:
 	@echo "  userguide-sample  Run pipeline on sample fixtures"
 	@echo "  userguide-ci-validate  Validate CI-friendly automation run"
 	@echo "  api        Run HTTP API server for automation"
+	@echo "  rewrite-proxy  Run local Azure OpenAI rewrite proxy on :8787"
 	@echo "  codex-setup  Run Codex install + build script"
 	@echo "  codex-maintenance  Run Codex maintenance (cached deps health check)"
 	@echo "  clean      Remove generated inventory"
@@ -58,6 +59,9 @@ userguide-ci-validate:
 
 api:
 	@python3 -m scripts.user_guide_automation.api
+
+rewrite-proxy:
+	@node scripts/rewrite-proxy.mjs
 
 clean:
 	@rm -f .reports/INVENTORY.jsonl
