@@ -63,7 +63,11 @@ jobs:
           const app = express();
           // Prefer redirect for /help to external Help Center
           const HELP_REDIRECT = process.env.HELP_REDIRECT || process.env.VITE_HELP_CENTER_URL || 'https://www.chatbase.co/mnxB5kB3I-JSpdYAEJB2W/help';
-          app.get('/help', (_req, res) => res.redirect(302, HELP_REDIRECT));
+          const redirectHelp = (_req, res) => res.redirect(302, HELP_REDIRECT);
+          app.get('/help', redirectHelp);
+          app.get('/help/', redirectHelp);
+          app.head('/help', redirectHelp);
+          app.head('/help/', redirectHelp);
           app.use(express.static(__dirname));
           app.get('/health', (_req,res)=>res.json({ok:true, ts:new Date().toISOString()}));
           app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
