@@ -3,10 +3,30 @@ set -euo pipefail
 
 # Sync a clean, public-safe export from the private repo into this repo.
 # Usage: ./sync_public.sh [/path/to/private/repo]
+# Optionally set SRC via environment: SRC=/path/to/private ./sync_public.sh
 
-SRC=${1:-/Users/pmd/myghprod/fabricagent-pub}
 DST_DIR=$(cd -- "$(dirname "$0")" && pwd)
+
+# Resolve source repo path: prefer CLI arg, then SRC env, then a nearby sibling guess
+SRC="${1:-${SRC:-}}"
+if [ -z "${SRC}" ]; then
+  for guess in \
+    "$DST_DIR/../fabricagent-pub" \
+    "$DST_DIR/../../fabricagent-pub" \
+    "$DST_DIR/../fabricagent_priv" \
+    ""; do
+    if [ -n "$guess" ] && [ -d "$guess/.git" ]; then SRC="$guess"; break; fi
+  done
+fi
+
+if [ -z "${SRC}" ] || [ ! -d "${SRC}" ]; then
+  echo "[sync][ERROR] Missing or invalid SRC path. Provide the private repo path as an argument or via SRC env." >&2
+  echo "Example: SRC=~/dev/fabricagent-pub ./sync_public.sh" >&2
+  exit 2
+fi
+
 TMP=$(mktemp -d /tmp/fabric_pub_sync_XXXX)
+trap 'rm -rf "$TMP"' EXIT
 
 echo "[sync] Source: $SRC"
 echo "[sync] Dest:   $DST_DIR"
