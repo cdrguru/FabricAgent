@@ -38,7 +38,8 @@ const App: React.FC = () => {
   }, [location.pathname]);
 
   // Chatbase widget across main routes
-  useChatbase(["/", "/catalogue", "/workforce", "/workflow", "/dag", "/help"]);
+  // Avoid loading the Chatbase widget on the Help route if the Help iframe also loads Chatbase content
+  useChatbase(["/", "/catalogue", "/workforce", "/workflow", "/dag"]);
 
   const onShowDetails = (prompt: Prompt) => setModalPrompt(prompt);
   const closeModal = () => setModalPrompt(null);

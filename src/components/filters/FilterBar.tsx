@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { useDebounce } from '../../hooks/useDebounce';
-import { Search, Layers, Box, User, Eraser, Download } from 'lucide-react';
+import { Search, Layers, Box, User, Eraser, Download, Filter as FilterIcon, Minimize2, Maximize2, ChevronDown, ChevronUp } from 'lucide-react';
 import { FilterChip } from './FilterChip';
 
 export type SourceKey = 'all' | 'giac' | 'custom';
@@ -24,6 +24,7 @@ interface FilterBarProps {
 export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChange, counts, groupedPillars, downloadUrl }) => {
   const debouncedQ = useDebounce(value.q, 250); // Updated to 250ms (within 150-300ms range)
   const [collapsed, setCollapsed] = React.useState(false);
+  const [minimized, setMinimized] = React.useState(false);
   const touchStartY = React.useRef<number | null>(null);
   const searchInputRef = React.useRef<HTMLInputElement>(null);
 
@@ -37,19 +38,24 @@ export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChang
     const handler = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
         e.preventDefault();
-        setCollapsed(c => {
-          const newCollapsed = !c;
-          if (!newCollapsed && searchInputRef.current) {
-            // Focus search input when expanding filters
-            setTimeout(() => searchInputRef.current?.focus(), 100);
-          }
-          return newCollapsed;
-        });
+        if (minimized) {
+          setMinimized(false);
+          setCollapsed(false);
+          setTimeout(() => searchInputRef.current?.focus(), 100);
+        } else {
+          setCollapsed(c => {
+            const newCollapsed = !c;
+            if (!newCollapsed && searchInputRef.current) {
+              setTimeout(() => searchInputRef.current?.focus(), 100);
+            }
+            return newCollapsed;
+          });
+        }
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, []);
+  }, [minimized]);
 
   const selectedSet = useMemo(() => new Set(value.pillars), [value.pillars]);
   const activeCount = (value.q ? 1 : 0) + (value.source !== 'all' ? 1 : 0) + value.pillars.length;
@@ -92,6 +98,34 @@ export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChang
       {label}{typeof count === 'number' ? ` (${count})` : ''}
     </button>
   ); };
+
+  if (minimized) {
+    return (
+      <div className="sticky top-16 z-30 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 border border-slate-200 rounded-lg px-3 py-2 mb-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 text-slate-600 text-sm">
+          <FilterIcon className="h-4 w-4" aria-hidden="true" />
+          <span>Filters hidden</span>
+          <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">Active: {activeCount}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          {downloadUrl && (
+            <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100 inline-flex items-center gap-2">
+              <Download className="h-4 w-4" aria-hidden="true" /> Download JSON
+            </a>
+          )}
+          <button
+            type="button"
+            onClick={() => { setMinimized(false); setCollapsed(false); setTimeout(() => searchInputRef.current?.focus(), 100); }}
+            className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100 inline-flex items-center gap-2"
+            aria-label="Show filters"
+            title="Show filters (Ctrl/Cmd+F)"
+          >
+            <Maximize2 className="h-4 w-4" aria-hidden="true" /> Show Filters
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -146,14 +180,33 @@ export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChang
             </button>
             <button
               type="button"
+              onClick={() => { setCollapsed(true); setMinimized(true); }}
+              className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100 inline-flex items-center gap-2"
+              aria-label="Minimize filters"
+              title="Minimize filters"
+            >
+              <Minimize2 className="h-4 w-4" aria-hidden="true" /> Minimize
+            </button>
+            <button
+              type="button"
               onClick={() => setCollapsed(c => !c)}
-              className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100"
+              className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100 inline-flex items-center gap-2"
               aria-expanded={!collapsed}
               aria-controls="filterbar-contents"
               aria-label={`${collapsed ? 'Expand' : 'Collapse'} filter options`}
               title="Toggle filters (Ctrl/Cmd+F)"
             >
-              {collapsed ? 'Expand Filters' : 'Collapse Filters'}
+              {collapsed ? (
+                <>
+                  <ChevronDown className="h-4 w-4" aria-hidden="true" />
+                  <span>Expand Filters</span>
+                </>
+              ) : (
+                <>
+                  <ChevronUp className="h-4 w-4" aria-hidden="true" />
+                  <span>Collapse Filters</span>
+                </>
+              )}
             </button>
           </div>
         </div>

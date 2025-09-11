@@ -204,9 +204,7 @@ export const PromptTable: React.FC<PromptTableProps> = ({ prompts, onShowDetails
                 </div>
             )}
 
-            <div className="flex justify-between items-center mb-2" aria-live="polite">
-                <div className="text-sm text-slate-600">Showing {prompts.length} prompts</div>
-            </div>
+            {/* Count is shown by parent sections to avoid duplication */}
 
             <div className="overflow-x-auto">
                 <table className="w-full text-left" role="table" aria-label="Prompts catalog">

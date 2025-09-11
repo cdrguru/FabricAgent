@@ -70,17 +70,16 @@ export const WorkflowGraph: React.FC<WorkflowGraphProps> = ({ dag, onNodeClick, 
             const fullPrompt = globalPromptMap.get(n.id.toLowerCase());
             const hasSafety = !!fullPrompt?.safety?.safety_clause;
             // Normalize label: convert <br> to newlines and strip other tags so vis renders multiline text nicely
-            const rawLabel = n.role || n.id;
+            const rawLabel = n.title || n.label || n.role || n.id;
             const label = String(rawLabel)
               .replace(/<br\s*\/?>(\n)?/gi, "\n")
               .replace(/<[^>]*>/g, "");
             // Sanitize tooltip HTML
-            const rawTitle = `<strong>Role:</strong> ${n.role || n.id}<br /><strong>Pillar:</strong> ${group}`;
-            const safeTitle = DOMPurify.sanitize(rawTitle, { USE_PROFILES: { html: true } });
+            const plainTitle = `Title: ${label}\nPillar: ${group}`;
             return {
                 id: n.id,
                 label: (hasSafety ? '🛡️ ' : '') + label,
-                title: safeTitle,
+                title: plainTitle,
                 group: group,
                 level: level.get(n.id) ?? undefined,
             };
