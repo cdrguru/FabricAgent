@@ -62,12 +62,7 @@ jobs:
           const __dirname = path.dirname(__filename);
           const app = express();
           // Prefer redirect for /help to external Help Center
-          const HELP_REDIRECT = process.env.HELP_REDIRECT || process.env.VITE_HELP_CENTER_URL || 'https://www.chatbase.co/mnxB5kB3I-JSpdYAEJB2W/help';
-          const redirectHelp = (_req, res) => res.redirect(302, HELP_REDIRECT);
-          app.get('/help', redirectHelp);
-          app.get('/help/', redirectHelp);
-          app.head('/help', redirectHelp);
-          app.head('/help/', redirectHelp);
+          // Serve static assets and SPA fallback. No explicit /help redirect.
           app.use(express.static(__dirname));
           app.get('/health', (_req,res)=>res.json({ok:true, ts:new Date().toISOString()}));
           app.get('*', (_req, res) => res.sendFile(path.join(__dirname, 'index.html')));
@@ -113,7 +108,7 @@ jobs:
           az webapp config appsettings set \
             -g "${{ vars.AZURE_RESOURCE_GROUP }}" \
             -n "${{ vars.AZURE_WEBAPP_NAME }}" \
-            --settings WEBSITE_NODE_DEFAULT_VERSION=~20 WEBSITE_RUN_FROM_PACKAGE=1 HELP_REDIRECT='${{ vars.VITE_HELP_CENTER_URL }}'
+            --settings WEBSITE_NODE_DEFAULT_VERSION=~20 WEBSITE_RUN_FROM_PACKAGE=1
 
       - name: Set startup command (npm start)
         run: |
