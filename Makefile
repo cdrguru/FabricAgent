@@ -1,0 +1,55 @@
+.PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api
+
+help:
+	@echo "Fabric Agent Makefile"
+	@echo "Targets:"
+	@echo "  install    Install web app dependencies (under src/)"
+	@echo "  dev        Run Vite dev server"
+	@echo "  build      Build production bundle"
+	@echo "  preview    Preview the production build"
+	@echo "  inventory  Generate .reports/INVENTORY.jsonl"
+	@echo "  validate   Run Python validation script(s)"
+	@echo "  verify     Run repo verification script"
+	@echo "  userguide  Run user-guide automation pipeline"
+	@echo "  userguide-sample  Run pipeline on sample fixtures"
+	@echo "  userguide-ci-validate  Validate CI-friendly automation run"
+	@echo "  api        Run HTTP API server for automation"
+	@echo "  clean      Remove generated inventory"
+
+install:
+	@npm -C src ci
+
+dev:
+	@npm -C src run dev
+
+build:
+	@npm -C src run build
+
+preview:
+	@npm -C src run preview
+
+inventory:
+	@mkdir -p .reports
+	@python3 -c "from scripts.inventory.generate_inventory import generate_inventory; generate_inventory('.reports/INVENTORY.jsonl')"
+	@echo "Wrote .reports/INVENTORY.jsonl"
+
+validate:
+	@python3 scripts/validate_fabric_agent.py || true
+
+verify:
+	@bash ./verify_fabricagent.sh || true
+
+userguide:
+	@python3 -m scripts.user_guide_automation.cli --repo .
+
+userguide-sample:
+	@python3 -m scripts.user_guide_automation.cli --repo tests/fixtures/fabric_repo_sample
+
+userguide-ci-validate:
+	@python3 -m scripts.user_guide_automation.ci_validate
+
+api:
+	@python3 -m scripts.user_guide_automation.api
+
+clean:
+	@rm -f .reports/INVENTORY.jsonl
