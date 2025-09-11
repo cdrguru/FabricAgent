@@ -176,3 +176,33 @@ export const SEARCH_SYNONYMS: Record<string, string[]> = {
   'modeling': ['semantic model', 'tmdl'],
   'documentation': ['docs', 'guide', 'help'],
 };
+
+// Descriptions for pillar tooltips and accessible labels
+export const PILLAR_DESCRIPTIONS: Record<string, string> = {
+  'career-soft-skills': 'Career growth, resumes, interviews, and soft skills guidance.',
+  'documentation': 'Writing, docs, and knowledge capture for teams.',
+  'deployment-governance': 'Workspaces, environments, guardrails, and deployment practices.',
+  'ai-safety': 'Responsible AI use, safety clauses, and governance.',
+  'performance-bpa': 'Model and report tuning, performance checks, and BPA.',
+  'modeling-tmdl': 'Semantic modeling, TMDL, and best practices.',
+  'power-query': 'Power Query (M), connectors, and folding.',
+  'dax': 'DAX measures, calculations, and patterns.',
+  'semantic-model': 'Semantic layer design and metadata.',
+  'fabric': 'Microsoft Fabric platform components and orchestration.',
+  'architecture': 'Solution architecture and integration patterns.',
+  'lakehouse': 'Lakehouse concepts and Delta/Parquet data.',
+  'warehouse': 'Data warehouse patterns and SQL.',
+  'spark': 'Spark notebooks and data engineering.',
+  'rls': 'Row/column level security patterns and guidance.',
+  'incremental-refresh': 'Refresh strategies and incremental processing.',
+  'directquery': 'DirectQuery connectivity and optimization.',
+  'direct-lake': 'Direct Lake connectivity and modeling.',
+  'ci-cd': 'Pipelines, testing, validation, and automation.',
+  'devops': 'DevOps processes and tooling.',
+  'gitops': 'Source control and GitOps workflows.',
+  'monitoring': 'Observability, metrics, and health checks.',
+  'optimization': 'General optimization strategies and tuning.',
+  'compliance': 'Regulatory requirements and compliance operations.',
+  'capacity': 'Capacity planning, sizing, and utilization.',
+  'other': 'Miscellaneous content not covered elsewhere.'
+};

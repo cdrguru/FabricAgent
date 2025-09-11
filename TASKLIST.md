@@ -27,11 +27,11 @@ Progress Snapshot
 
 ## Phase 3.1: Setup
 
-- [ ] T001 Create `src/components/search/SearchSuggestions.tsx` and `src/hooks/useSuggestions.ts` scaffolds for query suggestions and keyboard navigation.
-- [ ] T002 Extend synonyms and pillar constants in `src/constants.ts` (add `PILLAR_DESCRIPTIONS` for `career-soft-skills`).
-- [ ] T003 [P] Add localStorage helpers `src/utils/storage.ts` for favorites, view counts, and ratings (get/set/toggle with namespaced keys).
-- [ ] T004 [P] Add lightweight focus trap util `src/utils/focusTrap.ts` (trap within container; return release function).
-- [ ] T005 [P] Create onboarding scaffold `src/components/ui/Onboarding.tsx` (dismissible “Get Started” callout).
+- [x] T001 Create `src/components/search/SearchSuggestions.tsx` and `src/hooks/useSuggestions.ts` scaffolds for query suggestions and keyboard navigation.
+- [x] T002 Extend synonyms and pillar constants in `src/constants.ts` (add `PILLAR_DESCRIPTIONS` for `career-soft-skills`).
+- [x] T003 [P] Add localStorage helpers `src/utils/storage.ts` for favorites, view counts, and ratings (get/set/toggle with namespaced keys).
+- [x] T004 [P] Add lightweight focus trap util `src/utils/focusTrap.ts` (trap within container; return release function).
+- [x] T005 [P] Create onboarding scaffold `src/components/ui/Onboarding.tsx` (dismissible “Get Started” callout).
 
 ## Phase 3.2: Tests First (TDD)
 
@@ -46,33 +46,34 @@ Progress Snapshot
 ## Phase 3.3: Core Implementation
 
 - [x] T013 Implement suggestion engine in `src/utils/suggest.ts` (derive from names, tags, pillars, synonyms, recent queries).
-- [ ] T014 Wire suggestions UI into `src/components/filters/FilterBar.tsx` (dropdown under input; arrow keys; Enter to accept; mouse select).
+- [x] T014 Wire suggestions UI into `src/components/filters/FilterBar.tsx` (dropdown under input; arrow keys; Enter to accept; mouse select).
 - [x] T015 Integrate `SEARCH_SYNONYMS` in `src/utils/search.ts` (expand tokens pre-parse; de‑dup) and extend `extractHighlightTokens`.
 - [x] T016 Add ‘Career & Soft‑Skills’ pillar: update `src/constants.ts` (colors/aliases); ensure `PillarBadge` supports it.
-- [ ] T017 Update grouped pillars in `src/components/sections/CatalogueSection.tsx` to include “Career & Soft‑Skills”.
+- [x] T017 Update grouped pillars in `src/components/sections/CatalogueSection.tsx` to include “Career & Soft‑Skills”.
 - [x] T018 Add sort control (Relevance | Newest | Name) in `src/components/filters/FilterBar.tsx`; implement `scorePrompt()` in `src/utils/search.ts`; apply sort in `src/components/sections/CatalogueSection.tsx`.
 - [ ] T019 Add “Related prompts” in details modal (`src/components/tables/PromptDetailsModal.tsx`) based on shared tags/pillars; show up to 5.
-- [ ] T020 Favorites: add star toggle in `src/components/tables/PromptTable.tsx` and `src/components/tables/PromptDetailsModal.tsx`; persist via `utils/storage`; add “Favorites” quick filter chip in `src/components/filters/FilterBar.tsx`.
-- [ ] T021 Enhance details: render `few_shots` (Examples) and “Tips” sections in `src/components/tables/PromptDetailsModal.tsx` (collapsible).
-- [ ] T022 Zero‑results UX: replace plain text in `src/components/tables/PromptTable.tsx` with suggestion panel (synonyms, top tags, link to Help); CTAs to clear filters/view favorites.
-- [ ] T023 Pillar/tag tooltips: use `title` attribute or small tooltip in `src/components/ui/PillarBadge.tsx` with descriptions from `PILLAR_DESCRIPTIONS`.
-- [ ] T024 Explain Any(OR)/All(AND): add info icon with tooltip next to mode toggle in `src/components/filters/FilterBar.tsx`.
-- [ ] T025 Keyboard/AT: use `utils/focusTrap` in modal; add “Skip to content” in `src/components/layout/Header.tsx`; add `id="main-content"` on `<main>` in `src/App.tsx`; ensure focus return.
+- [x] T019 Add “Related prompts” in details modal (`src/components/tables/PromptDetailsModal.tsx`) based on shared tags/pillars; show up to 5.
+- [x] T020 Favorites: add star toggle in `src/components/tables/PromptTable.tsx` and `src/components/tables/PromptDetailsModal.tsx`; persist via `utils/storage`; add “Favorites” quick filter chip in `src/components/filters/FilterBar.tsx`.
+- [x] T021 Enhance details: render `few_shots` (Examples) and “Tips” sections in `src/components/tables/PromptDetailsModal.tsx` (collapsible).
+- [x] T022 Zero‑results UX: replace plain text in `src/components/tables/PromptTable.tsx` with suggestion panel (synonyms, top tags, link to Help); CTAs to clear filters/view favorites.
+- [x] T023 Pillar/tag tooltips: use `title` attribute or small tooltip in `src/components/ui/PillarBadge.tsx` with descriptions from `PILLAR_DESCRIPTIONS`.
+- [x] T024 Explain Any(OR)/All(AND): add info icon with tooltip next to mode toggle in `src/components/filters/FilterBar.tsx`.
+- [x] T025 Keyboard/AT: use `utils/focusTrap` in modal; add “Skip to content” in header; add `id="main-content"` on `<main>` in `src/App.tsx`; ensure focus return.
 - [ ] T026 Mobile filters: add `src/components/filters/MobileFilterDrawer.tsx` (off‑canvas) and expose toggle in `FilterBar.tsx` for `sm` breakpoints.
-- [ ] T027 Onboarding/about: render `Onboarding` in `CatalogueSection` top area (dismissible via storage flag).
-- [ ] T028 Popularity metrics: increment view count on modal open; show “Trending” badge; enable “Most Viewed” sort.
-- [ ] T029 Share prompt: “Copy link” in modal; in `src/App.tsx` read `id` query and open modal when data ready.
-- [ ] T030 Tag filter: extend `FilterState` with `tags: string[]`; compute all tags in `CatalogueSection`; add tag multi‑select chips.
-- [ ] T031 Advanced search help: add tooltip/inline hint near search input with AND/OR/NOT examples and field qualifiers.
+- [x] T027 Onboarding/about: render `Onboarding` in `CatalogueSection` top area (dismissible via storage flag).
+- [x] T028 Popularity metrics: increment view count on modal open; show “Trending” badge; enable “Most Viewed” sort.
+- [x] T029 Share prompt: “Copy link” in modal; in `src/App.tsx` read `id` query and open modal when data ready.
+- [x] T030 Tag filter: extend `FilterState` with `tags: string[]`; compute all tags in `CatalogueSection`; add tag multi‑select chips.
+- [x] T031 Advanced search help: add tooltip/inline hint near search input with AND/OR/NOT examples and field qualifiers.
 - [ ] T032 New/Updated badges: compute from `created_at`/`updated_at` and render in `PromptTable`.
-- [ ] T033 Feedback widget: 1–5 rating + comment in modal; store per‑id in `utils/storage`; show local average.
+- [x] T033 Feedback widget: 1–5 rating + comment in modal; store per‑id in `utils/storage`; show local average.
 
 ## Phase 3.4: Integration
 
-- [ ] T034 Connect favorites filter into query pipeline in `CatalogueSection` and display count badge in `FilterBar`.
-- [ ] T035 Hook suggestions into zero‑results panel and “did you mean” prompts in `CatalogueSection`.
-- [ ] T036 Tie popularity metrics to “Most Viewed” sort in `CatalogueSection` via `utils/storage`.
-- [ ] T037 Ensure deep‑link open runs after data load in `src/App.tsx` (effect watches query + data readiness).
+- [x] T034 Connect favorites filter into query pipeline in `CatalogueSection` and display count badge in `FilterBar`.
+- [x] T035 Hook suggestions into zero‑results panel and “did you mean” prompts in `CatalogueSection`.
+- [x] T036 Tie popularity metrics to “Most Viewed” sort in `CatalogueSection` via `utils/storage`.
+- [x] T037 Ensure deep‑link open runs after data load in `src/App.tsx` (effect watches query + data readiness).
 
 ## Phase 3.5: Polish
 

@@ -68,7 +68,7 @@ export function extractHighlightTokens(q: string): string[] {
   return Array.from(expanded);
 }
 
-export type SortMode = 'relevance' | 'newest' | 'name';
+export type SortMode = 'relevance' | 'newest' | 'name' | 'mostViewed';
 
 export function scorePrompt(p: any, parsed: ParsedQuery): number {
   // field weights favor name/id over description

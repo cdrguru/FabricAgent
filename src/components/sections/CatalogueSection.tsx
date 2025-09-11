@@ -10,6 +10,9 @@ import { FilterPresets } from '../filters/FilterPresets';
 import { useMemo } from 'react';
 import { useQueryState } from '../../hooks/useQueryState';
 import { parseQuery, matchPrompt, extractHighlightTokens, scorePrompt } from '../../utils/search';
+import { getViewCount, incrementViewCount, getFavorites } from '../../utils/storage';
+import { buildSuggestionIndex, getSuggestions, Suggestion } from '../../utils/suggest';
+import { Onboarding } from '../ui/Onboarding';
 
 interface CatalogueSectionProps {
     prompts: Prompt[];
@@ -37,12 +40,25 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
     const giacCount = prompts.filter(p => p.provenance === 'giac').length;
     const customCount = prompts.filter(p => p.provenance !== 'giac').length;
 
-    const [filters, setFilters] = useQueryState<FilterState>('catalogueFilters', { q: '', source: 'all', pillars: [], sort: 'relevance' });
+    const [filters, setFilters] = useQueryState<FilterState>('catalogueFilters', { q: '', source: 'all', pillars: [], tags: [], sort: 'relevance', favorites: false });
     const allPillars = useMemo(() => {
         const s = new Set<string>();
         prompts.forEach(p => (p.pillars || []).forEach(x => s.add(x)));
         return Array.from(s).sort();
     }, [prompts]);
+    const allTags = useMemo(() => {
+        const s = new Set<string>();
+        prompts.forEach(p => (p.tags || []).forEach(x => x && s.add(x)));
+        return Array.from(s).sort();
+    }, [prompts]);
+
+    // react to favorites changes when favorites filter is active
+    const [favTick, setFavTick] = React.useState(0);
+    React.useEffect(() => {
+      const handler = () => setFavTick(t => t + 1);
+      window.addEventListener('fa:favorites-changed', handler as any);
+      return () => window.removeEventListener('fa:favorites-changed', handler as any);
+    }, []);
 
     const filtered = useMemo(() => {
         const parsed = parseQuery(filters.q || '');
@@ -52,7 +68,20 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
             const pp = p.pillars || [];
             const mode = filters.pillarsMode || 'any';
             const matchPillars = filters.pillars.length === 0 || (mode === 'any' ? pp.some(x => filters.pillars.includes(x)) : filters.pillars.every(x => pp.includes(x)));
-            return matchSearch && matchSrc && matchPillars;
+            // tags OR logic
+            const tsel = filters.tags || [];
+            const ptags = p.tags || [];
+            const matchTags = tsel.length === 0 || ptags.some(x => tsel.includes(x));
+            // favorites filter
+            const matchFav = !filters.favorites || (() => {
+              try {
+                const favRaw = localStorage.getItem('fa:favorites');
+                if (!favRaw) return false;
+                const set = new Set<string>(JSON.parse(favRaw));
+                return set.has(p.id);
+              } catch { return false; }
+            })();
+            return matchSearch && matchSrc && matchPillars && matchTags && matchFav;
         });
         const mode = filters.sort || 'relevance';
         const sorted = [...base];
@@ -63,11 +92,18 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
             sorted.sort((a, b) => ts(b) - ts(a));
         } else if (mode === 'name') {
             sorted.sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
+        } else if (mode === 'mostViewed') {
+            sorted.sort((a, b) => getViewCount(b.id) - getViewCount(a.id));
         }
         return sorted;
-    }, [prompts, filters]);
+    }, [prompts, filters, favTick]);
 
     const highlightTokens = useMemo(() => extractHighlightTokens(filters.q || ''), [filters.q]);
+
+    const suggestIndex = useMemo(() => buildSuggestionIndex(prompts), [prompts]);
+    const didYouMean: Suggestion[] = useMemo(() => {
+        try { return getSuggestions(filters.q || '', suggestIndex, 6); } catch { return []; }
+    }, [filters.q, suggestIndex]);
 
     // Grouped pillars as per spec
     const groupedPillars = useMemo(() => {
@@ -75,12 +111,14 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
             'Governance & Security': [],
             'Performance & Modeling': [],
             'Visualization & Docs': [],
+            'Career & Soft‑Skills': [],
             'Other': [],
         };
         const map: Record<string, keyof typeof groups> = {
             governance: 'Governance & Security', security: 'Governance & Security', compliance: 'Governance & Security', 'ai-safety': 'Governance & Security', rls: 'Governance & Security',
-            performance: 'Performance & Modeling', dax: 'Performance & Modeling', modeling: 'Performance & Modeling', 'semantic-model': 'Performance & Modeling',
+            performance: 'Performance & Modeling', dax: 'Performance & Modeling', modeling: 'Performance & Modeling', 'semantic-model': 'Performance & Modeling', 'optimization': 'Performance & Modeling',
             visualization: 'Visualization & Docs', documentation: 'Visualization & Docs',
+            'career-soft-skills': 'Career & Soft‑Skills',
         };
         for (const p of allPillars) {
             const key = (p || 'other').toLowerCase();
@@ -119,6 +157,7 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
                           <img src="/assets/illustrations/prompt-engineering-concept.svg" alt="Prompt validation process illustration" className="h-32 w-auto" />
                 </div>
             </div>
+            <Onboarding />
             <FilterBar
                 allPillars={allPillars}
                 value={filters}
@@ -126,6 +165,8 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
                 counts={{ total: prompts.length, giac: giacCount, custom: customCount }}
                 groupedPillars={groupedPillars}
                 downloadUrl={downloadUrl}
+                suggestIndex={suggestIndex}
+                allTags={allTags}
             />
             <FilterPresets namespace="catalogue" value={filters} onChange={setFilters} />
             <div className="mb-2 text-sm text-slate-600" aria-live="polite">
@@ -138,8 +179,20 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
                 setSelectedPrompts={setSelectedPrompts}
                 globalPromptMap={globalPromptMap}
                 highlightTokens={highlightTokens}
+                filters={filters}
+                onUpdateFilters={setFilters}
+                topTags={computeTopTags(prompts)}
+                suggestions={didYouMean}
             />
         </SectionCard>
         </>
     );
 };
+
+function computeTopTags(prompts: Prompt[]): string[] {
+  const map = new Map<string, number>();
+  for (const p of prompts) {
+    (p.tags || []).forEach(t => { if (!t) return; map.set(t, (map.get(t) || 0) + 1); });
+  }
+  return Array.from(map.entries()).sort((a,b)=>b[1]-a[1]).map(([k])=>k).slice(0,50);
+}

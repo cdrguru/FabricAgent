@@ -9,6 +9,7 @@ import { FilterPresets } from '../filters/FilterPresets';
 import { useMemo } from 'react';
 import { useQueryState } from '../../hooks/useQueryState';
 import { parseQuery, matchPrompt, extractHighlightTokens } from '../../utils/search';
+import { buildSuggestionIndex, getSuggestions } from '../../utils/suggest';
 
 interface WorkforceSectionProps {
     prompts: Prompt[];
@@ -27,10 +28,15 @@ export const WorkforceSection: React.FC<WorkforceSectionProps> = ({
     onShowDetails,
     globalPromptMap
 }) => {
-    const [filters, setFilters] = useQueryState<FilterState>('workforceFilters', { q: '', source: 'all', pillars: [] });
+    const [filters, setFilters] = useQueryState<FilterState>('workforceFilters', { q: '', source: 'all', pillars: [], tags: [] });
     const allPillars = useMemo(() => {
         const s = new Set<string>();
         prompts.forEach(p => (p.pillars || []).forEach(x => s.add(x)));
+        return Array.from(s).sort();
+    }, [prompts]);
+    const allTags = useMemo(() => {
+        const s = new Set<string>();
+        prompts.forEach(p => (p.tags || []).forEach(x => x && s.add(x)));
         return Array.from(s).sort();
     }, [prompts]);
 
@@ -45,11 +51,18 @@ export const WorkforceSection: React.FC<WorkforceSectionProps> = ({
             const pp = p.pillars || [];
             const mode = filters.pillarsMode || 'any';
             const matchPillars = filters.pillars.length === 0 || (mode === 'any' ? pp.some(x => filters.pillars.includes(x)) : filters.pillars.every(x => pp.includes(x)));
-            return matchSearch && matchSrc && matchPillars;
+            const tsel = filters.tags || [];
+            const ptags = p.tags || [];
+            const matchTags = tsel.length === 0 || ptags.some(x => tsel.includes(x));
+            return matchSearch && matchSrc && matchPillars && matchTags;
         });
     }, [prompts, filters]);
 
     const highlightTokens = useMemo(() => extractHighlightTokens(filters.q || ''), [filters.q]);
+    const suggestIndex = React.useMemo(() => buildSuggestionIndex(prompts), [prompts]);
+    const didYouMean = React.useMemo(() => {
+        try { return getSuggestions(filters.q || '', suggestIndex, 6); } catch { return []; }
+    }, [filters.q, suggestIndex]);
 
     // Grouped pillars matching spec
     const groupedPillars = useMemo(() => {
@@ -98,6 +111,7 @@ export const WorkforceSection: React.FC<WorkforceSectionProps> = ({
                 counts={{ total: prompts.length, giac: giacCount, custom: customCount }}
                 groupedPillars={groupedPillars}
                 downloadUrl={downloadUrl}
+                allTags={allTags}
             />
             <FilterPresets namespace="workforce" value={filters} onChange={setFilters} />
             <div className="mb-2 text-sm text-slate-600" aria-live="polite">
@@ -110,6 +124,9 @@ export const WorkforceSection: React.FC<WorkforceSectionProps> = ({
                 setSelectedPrompts={setSelectedPrompts}
                 globalPromptMap={globalPromptMap}
                 highlightTokens={highlightTokens}
+                filters={filters}
+                onUpdateFilters={setFilters}
+                suggestions={didYouMean}
             />
         </SectionCard>
     );

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { GROUP_COLORS, PILLAR_ALIASES } from '../../constants';
+import { GROUP_COLORS, PILLAR_ALIASES, PILLAR_DESCRIPTIONS } from '../../constants';
 
 interface PillarBadgeProps {
   pillar: string;
@@ -48,11 +48,13 @@ export const PillarBadge: React.FC<PillarBadgeProps> = ({ pillar }) => {
   const handleIconLoad = () => setIconLoaded(true);
   const handleIconError = () => setIconError(true);
 
+  const title = PILLAR_DESCRIPTIONS[key] || `Pillar: ${pillar.replace(/-/g, ' ')}`;
   return (
     <span
       className="inline-flex items-center text-xs font-semibold px-2 py-1 rounded-full whitespace-nowrap capitalize border bg-white text-slate-700"
       style={{ borderColor: color }}
       aria-label={`Pillar: ${pillar}`}
+      title={title}
     >
       {iconUrl && !iconError ? (
          <img
