@@ -8,6 +8,8 @@ export const GROUP_COLORS: { [key: string]: string } = {
   'documentation': '#8e7cc3',
   'prompt-engineering': '#76a5af',
   'ai-safety': '#ff9900',
+  // New pillar for non-technical, career-focused prompts
+  'career-soft-skills': '#f39c12',
   // Extended pillars
   'fabric': '#5dade2',
   'architecture': '#45b39d',
@@ -38,6 +40,14 @@ export const HELP_URL =
 
 // Map common aliases/synonyms to canonical pillar keys used above
 export const PILLAR_ALIASES: Record<string, string> = {
+  // Career & soft skills pillar
+  'career': 'career-soft-skills',
+  'soft-skills': 'career-soft-skills',
+  'softskills': 'career-soft-skills',
+  'resume': 'career-soft-skills',
+  'cv': 'career-soft-skills',
+  'cover-letter': 'career-soft-skills',
+  'job-application': 'career-soft-skills',
   // Preferred canonical: documentation
   'docs': 'documentation',
   'user-guide': 'documentation',
@@ -150,4 +160,19 @@ export const PILLAR_ALIASES: Record<string, string> = {
   'enhancement': 'optimization',
   'refactor': 'optimization',
   'refactoring': 'optimization'
+};
+
+// Synonym map for search expansion. All keys/values should be lowercase.
+export const SEARCH_SYNONYMS: Record<string, string[]> = {
+  // Career discovery
+  'resume': ['cv', 'cover letter', 'portfolio', 'career', 'soft skills', 'documentation'],
+  'cv': ['resume', 'cover letter', 'portfolio', 'career', 'soft skills', 'documentation'],
+  'cover letter': ['resume', 'cv', 'portfolio', 'career', 'documentation'],
+  'job application': ['resume', 'cv', 'cover letter', 'portfolio', 'career'],
+  'interview': ['soft skills', 'portfolio', 'profile'],
+  // General helpful expansions
+  'governance': ['deployment', 'compliance'],
+  'performance': ['optimization', 'vertipaq', 'speed'],
+  'modeling': ['semantic model', 'tmdl'],
+  'documentation': ['docs', 'guide', 'help'],
 };

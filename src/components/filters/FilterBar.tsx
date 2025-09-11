@@ -10,6 +10,7 @@ export interface FilterState {
   source: SourceKey;
   pillars: string[];
   pillarsMode?: 'any' | 'all';
+  sort?: 'relevance' | 'newest' | 'name';
 }
 
 interface FilterBarProps {
@@ -58,7 +59,7 @@ export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChang
   }, [minimized]);
 
   const selectedSet = useMemo(() => new Set(value.pillars), [value.pillars]);
-  const activeCount = (value.q ? 1 : 0) + (value.source !== 'all' ? 1 : 0) + value.pillars.length;
+  const activeCount = (value.q ? 1 : 0) + (value.source !== 'all' ? 1 : 0) + value.pillars.length + ((value.sort && value.sort !== 'relevance') ? 1 : 0);
 
   const setSource = (s: SourceKey) => onChange({ ...value, source: s });
   const togglePillar = (p: string) => {
@@ -168,6 +169,18 @@ export const FilterBar: React.FC<FilterBarProps> = ({ allPillars, value, onChang
         </div>
         <div className="ml-auto">
           <div className="flex items-center gap-2">
+            <label className="text-xs text-slate-600" htmlFor="sort-select">Sort</label>
+            <select
+              id="sort-select"
+              aria-label="Sort results"
+              value={value.sort || 'relevance'}
+              onChange={(e) => onChange({ ...value, sort: e.target.value as any })}
+              className="text-sm border border-slate-300 rounded px-2 py-1 bg-white"
+            >
+              <option value="relevance">Relevance</option>
+              <option value="newest">Newest</option>
+              <option value="name">Name</option>
+            </select>
             <span className="text-xs bg-slate-100 text-slate-700 px-2 py-1 rounded-full" aria-live="polite">Active: {activeCount}</span>
             {downloadUrl && (
               <a href={downloadUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-slate-700 hover:text-slate-900 px-3 py-1 rounded-md hover:bg-slate-100 inline-flex items-center gap-2">

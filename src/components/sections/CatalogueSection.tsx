@@ -9,7 +9,7 @@ import { FilterBar, FilterState } from '../filters/FilterBar';
 import { FilterPresets } from '../filters/FilterPresets';
 import { useMemo } from 'react';
 import { useQueryState } from '../../hooks/useQueryState';
-import { parseQuery, matchPrompt, extractHighlightTokens } from '../../utils/search';
+import { parseQuery, matchPrompt, extractHighlightTokens, scorePrompt } from '../../utils/search';
 
 interface CatalogueSectionProps {
     prompts: Prompt[];
@@ -37,7 +37,7 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
     const giacCount = prompts.filter(p => p.provenance === 'giac').length;
     const customCount = prompts.filter(p => p.provenance !== 'giac').length;
 
-    const [filters, setFilters] = useQueryState<FilterState>('catalogueFilters', { q: '', source: 'all', pillars: [] });
+    const [filters, setFilters] = useQueryState<FilterState>('catalogueFilters', { q: '', source: 'all', pillars: [], sort: 'relevance' });
     const allPillars = useMemo(() => {
         const s = new Set<string>();
         prompts.forEach(p => (p.pillars || []).forEach(x => s.add(x)));
@@ -46,7 +46,7 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
 
     const filtered = useMemo(() => {
         const parsed = parseQuery(filters.q || '');
-        return prompts.filter(p => {
+        const base = prompts.filter(p => {
             const matchSearch = filters.q.length === 0 || matchPrompt(p, parsed);
             const matchSrc = filters.source === 'all' || (filters.source === 'giac' ? p.provenance === 'giac' : p.provenance !== 'giac');
             const pp = p.pillars || [];
@@ -54,6 +54,17 @@ export const CatalogueSection: React.FC<CatalogueSectionProps> = ({
             const matchPillars = filters.pillars.length === 0 || (mode === 'any' ? pp.some(x => filters.pillars.includes(x)) : filters.pillars.every(x => pp.includes(x)));
             return matchSearch && matchSrc && matchPillars;
         });
+        const mode = filters.sort || 'relevance';
+        const sorted = [...base];
+        if (mode === 'relevance') {
+            sorted.sort((a, b) => scorePrompt(b, parsed) - scorePrompt(a, parsed));
+        } else if (mode === 'newest') {
+            const ts = (x: any) => (x.updated_at || x.created_at) ? Date.parse(x.updated_at || x.created_at) : 0;
+            sorted.sort((a, b) => ts(b) - ts(a));
+        } else if (mode === 'name') {
+            sorted.sort((a, b) => String(a.name || a.id).localeCompare(String(b.name || b.id)));
+        }
+        return sorted;
     }, [prompts, filters]);
 
     const highlightTokens = useMemo(() => extractHighlightTokens(filters.q || ''), [filters.q]);
