@@ -13,6 +13,24 @@ unset NPM_CONFIG_OMIT npm_config_omit
 npm config delete proxy >/dev/null 2>&1 || true
 npm config delete https-proxy >/dev/null 2>&1 || true
 
+# Optional corporate root CA
+if [[ -n "${CORP_CA_FILE:-}" && -f "${CORP_CA_FILE}" ]]; then
+  export NODE_EXTRA_CA_CERTS="${CORP_CA_FILE}"
+  npm config set cafile "${CORP_CA_FILE}" >/dev/null 2>&1 || true
+elif [[ -n "${CORP_CA_B64:-}" ]]; then
+  mkdir -p .certs
+  CA_FILE=".certs/corp-ca.pem"
+  if command -v base64 >/dev/null 2>&1; then
+    echo "$CORP_CA_B64" | base64 --decode > "$CA_FILE" 2>/dev/null \
+      || echo "$CORP_CA_B64" | base64 -D > "$CA_FILE" 2>/dev/null \
+      || echo "$CORP_CA_B64" | openssl base64 -d -A > "$CA_FILE"
+  else
+    echo "$CORP_CA_B64" | openssl base64 -d -A > "$CA_FILE"
+  fi
+  export NODE_EXTRA_CA_CERTS="$PWD/$CA_FILE"
+  npm config set cafile "$NODE_EXTRA_CA_CERTS" >/dev/null 2>&1 || true
+fi
+
 LOCKSUM_FILE=.codex_lock.sha256
 if [[ -f package-lock.json ]]; then
   if command -v sha256sum >/dev/null 2>&1; then

@@ -1,4 +1,4 @@
-.PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api codex-setup
+.PHONY: help install dev build preview inventory validate verify clean userguide userguide-sample userguide-ci-validate api codex-setup codex-maintenance
 
 help:
 	@echo "Fabric Agent Makefile"
@@ -15,6 +15,7 @@ help:
 	@echo "  userguide-ci-validate  Validate CI-friendly automation run"
 	@echo "  api        Run HTTP API server for automation"
 	@echo "  codex-setup  Run Codex install + build script"
+	@echo "  codex-maintenance  Run Codex maintenance (cached deps health check)"
 	@echo "  clean      Remove generated inventory"
 
 install:
@@ -31,6 +32,9 @@ preview:
 
 codex-setup:
 	@bash codex/setup.sh
+
+codex-maintenance:
+	@bash codex/maintenance.sh
 
 inventory:
 	@mkdir -p .reports
