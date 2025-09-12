@@ -10,13 +10,22 @@ export function useChatbase(enableOnPaths = ["*"]) {
   const shouldEnable = enableOnPaths.includes("*") || enableOnPaths.some((p) => pathname.startsWith(p));
 
   useEffect(() => {
-    if (!shouldEnable) return;
-    if (window.__CHATBASE_EMBED_LOADED__) return;
+    const cleanup = () => {
+      document.getElementById("chatbase-embed")?.remove();
+      window.__CHATBASE_EMBED_LOADED__ = false;
+    };
+
+    if (!shouldEnable) {
+      cleanup();
+      return;
+    }
+
+    if (window.__CHATBASE_EMBED_LOADED__) return cleanup;
 
     const existing = document.getElementById("chatbase-embed");
     if (existing) {
       window.__CHATBASE_EMBED_LOADED__ = true;
-      return;
+      return cleanup;
     }
 
     if (!window.embeddedChatbotConfig) {
@@ -34,5 +43,7 @@ export function useChatbase(enableOnPaths = ["*"]) {
     s.defer = true;
     document.body.appendChild(s);
     window.__CHATBASE_EMBED_LOADED__ = true;
+
+    return cleanup;
   }, [shouldEnable]);
 }
