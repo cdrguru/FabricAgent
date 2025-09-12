@@ -78,7 +78,7 @@ jobs:
           }
 
           function logEnvPresence(){
-            const keys = ['AZURE_OPENAI_ENDPOINT','AZURE_OPENAI_API_KEY','AZURE_OPENAI_DEPLOYMENT','AZURE_OPENAI_API_VERSION'];
+            const keys = ['AZURE_OPENAI_ENDPOINT','AZURE_OPENAI_API_KEY','AZURE_OPENAI_KEY','AZURE_OPENAI_DEPLOYMENT','AZURE_OPENAI_MODEL','AZURE_OPENAI_MODEL_AGENT','AZURE_OPENAI_API_VERSION'];
             console.log('[server] env presence:', Object.fromEntries(keys.map(k => [k, Boolean(process.env[k])])));
           }
 
@@ -90,10 +90,10 @@ jobs:
               const text = body.text || '';
               const instruction = body.instruction || 'Rewrite clearly while preserving technical accuracy.';
               const endpoint = process.env.AZURE_OPENAI_ENDPOINT;
-              const apiKey = process.env.AZURE_OPENAI_API_KEY;
+              const apiKey = process.env.AZURE_OPENAI_API_KEY || process.env.AZURE_OPENAI_KEY;
               const apiVersion = process.env.AZURE_OPENAI_API_VERSION || '2024-02-15-preview';
-              const deployment = body.deployment || process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-5-mini';
-              if (!endpoint || !apiKey) return send(res, 500, { error: 'Missing Azure OpenAI configuration' });
+              const deployment = body.deployment || process.env.AZURE_OPENAI_MODEL || process.env.AZURE_OPENAI_DEPLOYMENT || process.env.AZURE_OPENAI_MODEL_AGENT || 'gpt-5-mini';
+              if (!endpoint || !apiKey) return send(res, 500, { error: 'Missing Azure OpenAI endpoint or API key' });
               const url = `${endpoint.replace(/\/$/, '')}/openai/deployments/${deployment}/chat/completions?api-version=${encodeURIComponent(apiVersion)}`;
               const base = { messages: [ { role:'system', content:'You are a helpful rewriting assistant. Improve clarity and tone while preserving meaning.' }, { role:'user', content:`Instruction: ${instruction}\n\nText to rewrite:\n${text}` } ], temperature: 1, n: 1 };
               async function call(p){ return fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json','api-key':apiKey }, body: JSON.stringify(p) }); }
