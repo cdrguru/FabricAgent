@@ -337,3 +337,18 @@ Configure the following GitHub secrets for OIDC-based Azure login:
 - `AZURE_TENANT_ID`
 - `AZURE_SUBSCRIPTION_ID`
 - `AZURE_WEBAPP_NAME` (target app service)
+
+## 🔎 Hybrid Search (Azure Cognitive Search)
+
+- Configure `.env` using `.env.example` (set `AZURE_AI_SEARCH_*` and Azure OpenAI keys; set `AZURE_OPENAI_EMBED_MODEL`).
+- Create/update your Azure Search index to match `.speckit/hybridsearch_fabricagent_aisearch_index.json`.
+- Dry run (no upserts): `make ingest.dryrun` (prints counts by folder/ext)
+- Ingest repo files to Azure Search: `make ingest`
+- Run a hybrid query from CLI: `make query q="your query" k=10 opts="--semantic --filter kind=md,tag=spec"`
+- Local API server exposes `/api/search/hybrid` (POST search, GET suggestions): `make serve`
+
+Sample CLI queries:
+- `make query q="Rewrite this DirectQuery prompt for performance" k=8 opts="--semantic"`
+- `make query q="DAX: monthly distinct customers with filter context notes" k=8`
+- `make query q="Incremental refresh parameters guidance for Fabric" k=8 opts="--semantic"`
+- `make query q="Prompt style guide for Fabric Agent" k=8`

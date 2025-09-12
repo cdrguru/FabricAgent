@@ -67,5 +67,14 @@ rewrite-proxy:
 serve:
 	@node scripts/server.mjs
 
+ingest:
+	@node scripts/ingest/ingest_azure_search.mjs
+
+ingest.dryrun:
+	@DRY_RUN=1 node scripts/ingest/ingest_azure_search.mjs
+
+query:
+	@node scripts/ingest/query_azure_search.mjs "$(q)" "$(k)" $(opts)
+
 clean:
 	@rm -f .reports/INVENTORY.jsonl

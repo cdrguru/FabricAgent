@@ -88,3 +88,4 @@ INVENTORY.jsonl
 *.p12
 src/.certs/
 src/.codex_lock.sha256
+todo/
