@@ -49,7 +49,7 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
           >
             Try Again
           </button>
-          {process.env.NODE_ENV === 'development' && this.state.error && (
+            {import.meta.env.DEV && this.state.error && (
             <details style={{ marginTop: '10px' }}>
               <summary>Error Details</summary>
               <pre style={{ fontSize: '12px', overflow: 'auto' }}>
