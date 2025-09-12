@@ -89,3 +89,15 @@ INVENTORY.jsonl
 src/.certs/
 src/.codex_lock.sha256
 todo/
+
+# System files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Generated reports
+INVENTORY.jsonl
