@@ -100,3 +100,6 @@ Thumbs.db
 
 # Generated reports
 INVENTORY.jsonl
+
+# Vector embeddings
+embeddings/

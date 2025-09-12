@@ -76,5 +76,14 @@ ingest.dryrun:
 query:
 	@node scripts/ingest/query_azure_search.mjs "$(q)" "$(k)" $(opts)
 
+index.create:
+	@node scripts/ingest/create_search_index.mjs "$(schema)"
+
+convert.payload:
+	@node scripts/ingest/convert_search_response_to_upsert.mjs "$(in)" "$(out)" --action=$(action)
+
+convert.post:
+	@node scripts/ingest/convert_search_response_to_upsert.mjs "$(in)" --action=$(action) --post --index=$(index)
+
 clean:
 	@rm -f .reports/INVENTORY.jsonl

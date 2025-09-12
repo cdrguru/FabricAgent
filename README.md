@@ -348,7 +348,15 @@ Configure the following GitHub secrets for OIDC-based Azure login:
 - Local API server exposes `/api/search/hybrid` (POST search, GET suggestions): `make serve`
 
 Sample CLI queries:
+
 - `make query q="Rewrite this DirectQuery prompt for performance" k=8 opts="--semantic"`
 - `make query q="DAX: monthly distinct customers with filter context notes" k=8`
 - `make query q="Incremental refresh parameters guidance for Fabric" k=8 opts="--semantic"`
 - `make query q="Prompt style guide for Fabric Agent" k=8`
+
+Index provisioning:
+
+- Create or update the index from a local schema JSON:
+  - `make index.create schema="todo/specs/user-guide-automation/003-implement-hybrid-search/hybridsearch_fabricagent_aisearch_index.json"`
+  - Optionally override embedded azureOpenAIParameters from env: prefix with `OVERRIDE_AZURE_OPENAI=1`
+    - Example: `OVERRIDE_AZURE_OPENAI=1 AZURE_OPENAI_ENDPOINT=... AZURE_OPENAI_EMBED_MODEL=text-embedding-3-small AZURE_OPENAI_API_KEY=... make index.create`
