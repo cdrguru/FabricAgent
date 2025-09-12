@@ -102,7 +102,7 @@ const TableRow: React.FC<{
                                 </span>
                             ) : (
                                 <span title="Source: Custom" className="flex items-center">
-                                    <i className="fas fa-user text-slate-500 mr-1"></i>
+                                    <img src="/assets/illustrations/cdrguru.svg" alt="Custom" className="h-4 w-4 mr-1"/>
                                     <span className="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full font-medium">Custom</span>
                                 </span>
                             )}

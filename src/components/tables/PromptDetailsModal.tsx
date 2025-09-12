@@ -189,6 +189,13 @@ export const PromptDetailsModal: React.FC<PromptDetailsModalProps> = ({ prompt, 
                         )}
                     </div>
 
+                    {/* Custom banner for non-GIAC prompts */}
+                    {prompt.provenance !== 'giac' && (
+                      <div className="rounded-lg overflow-hidden border border-slate-200">
+                        <img src="/assets/illustrations/cdrguru-banner.svg" alt="Custom prompt banner" className="w-full h-auto" />
+                      </div>
+                    )}
+
                     {/* Summary */}
                      {(prompt.summary || prompt.description) && (
                         <div>

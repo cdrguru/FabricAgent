@@ -104,6 +104,7 @@ export const PILLAR_ALIASES: Record<string, string> = {
   'm-query': 'power-query',
   'query-folding': 'power-query',
   'parameterization': 'power-query',
+  'dataflows': 'power-query',
 
   // Security
   'rls': 'rls',
@@ -147,6 +148,7 @@ export const PILLAR_ALIASES: Record<string, string> = {
   'measure': 'dax',
   'aggregation': 'dax',
   'calculation-groups': 'dax',
+  'visualization': 'documentation',
 
   // AI & Prompting
   'ai': 'prompt-engineering',

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Prompt, DagData } from '../types';
-import { GROUP_COLORS } from '../constants';
+import { GROUP_COLORS, PILLAR_ALIASES } from '../constants';
 
 interface AppData {
   catalogue: Prompt[];
@@ -72,12 +72,26 @@ const normalizeData = (data: any): Prompt[] => {
 const deriveFields = (prompt: Prompt): Prompt => {
   const derived = { ...prompt };
 
-  // 1. Derive Pillars if missing
-  if (!derived.pillars || derived.pillars.length === 0) {
-    derived.pillars = (derived.tags || []).filter(t => GROUP_COLORS[t] || t.includes('powerbi') || t.includes('dax') || t.includes('governance'));
+  // 1. Derive/normalize pillars from tags and aliases
+  const aliasCandidates = new Set<string>();
+  (derived.tags || []).forEach(t => {
+    const key = String(t || '').toLowerCase();
+    const mapped = PILLAR_ALIASES[key];
+    if (mapped) aliasCandidates.add(mapped);
+    if (GROUP_COLORS[key]) aliasCandidates.add(key);
+  });
+  // If pillars absent or only 'other', prefer alias candidates
+  const current = (derived.pillars || []).map(x => String(x || '').toLowerCase());
+  const onlyOther = current.length === 0 || (current.length === 1 && current[0] === 'other');
+  if (onlyOther && aliasCandidates.size > 0) {
+    derived.pillars = Array.from(aliasCandidates).slice(0, 3);
   }
-   if (!derived.pillars || derived.pillars.length === 0) {
-      derived.pillars = ['other'];
+  // Still missing? apply lightweight heuristics
+  if (!derived.pillars || derived.pillars.length === 0) {
+    derived.pillars = (derived.tags || []).filter(t => GROUP_COLORS[t] || String(t).includes('powerquery') || String(t).includes('dax') || String(t).includes('governance'));
+  }
+  if (!derived.pillars || derived.pillars.length === 0) {
+    derived.pillars = ['other'];
   }
 
 
@@ -198,11 +212,15 @@ export const useData = () => {
             setSourceLabel(prev => prev + dagSourceSuffix);
         }
 
-        setData({
-            catalogue: normalizedCatalogue,
-            workforce: normalizedWorkforce,
-            dag: dagData
-        });
+        // Simple audit for 'other' pillars remaining
+        try {
+          const countOther = (list: any[]) => list.filter(p => (p.pillars || []).includes('other')).length;
+          const cOther = countOther(normalizedCatalogue);
+          const wOther = countOther(normalizedWorkforce);
+          if (cOther || wOther) console.warn('[audit] prompts with pillar "other" — catalogue:', cOther, 'workforce:', wOther);
+        } catch {}
+
+        setData({ catalogue: normalizedCatalogue, workforce: normalizedWorkforce, dag: dagData });
 
       } catch (err) {
         setError((err as Error).message);
