@@ -341,11 +341,22 @@ Configure the following GitHub secrets for OIDC-based Azure login:
 ## 🔎 Hybrid Search (Azure Cognitive Search)
 
 - Configure `.env` using `.env.example` (set `AZURE_AI_SEARCH_*` and Azure OpenAI keys; set `AZURE_OPENAI_EMBED_MODEL`).
-- Create/update your Azure Search index to match `.speckit/hybridsearch_fabricagent_aisearch_index.json`.
+- Create/update your Azure Search index to match `todo/specs/user-guide-automation/003-implement-hybrid-search/hybridsearch_fabricagent_aisearch_index.json`.
 - Dry run (no upserts): `make ingest.dryrun` (prints counts by folder/ext)
 - Ingest repo files to Azure Search: `make ingest`
 - Run a hybrid query from CLI: `make query q="your query" k=10 opts="--semantic --filter kind=md,tag=spec"`
 - Local API server exposes `/api/search/hybrid` (POST search, GET suggestions): `make serve`
+
+Environment (set in `.env`)
+
+- Search: `AZURE_AI_SEARCH_ENDPOINT`, `AZURE_AI_SEARCH_API_KEY`, `AZURE_AI_SEARCH_INDEX_NAME`, optional `AZURE_SEARCH_SEMANTIC_CONFIG`
+- Embeddings: `AZURE_OPENAI_ENDPOINT`, `AZURE_OPENAI_API_KEY` (or `AZURE_OPENAI_KEY`), `AZURE_OPENAI_EMBED_MODEL` (e.g., `text-embedding-3-small`)
+
+Ingest controls
+
+- Limit scope: `INGEST_ONLY=knowledge make ingest` (only index knowledge/)
+- Limit batch size for first run: `INGEST_ONLY=knowledge INGEST_MAX_DOCS=64 make ingest`
+- Caching: per-chunk SHA cache in `.reports/hybrid_ingest_cache.json` avoids re‑embedding unchanged chunks
 
 Sample CLI queries:
 
@@ -360,3 +371,16 @@ Index provisioning:
   - `make index.create schema="todo/specs/user-guide-automation/003-implement-hybrid-search/hybridsearch_fabricagent_aisearch_index.json"`
   - Optionally override embedded azureOpenAIParameters from env: prefix with `OVERRIDE_AZURE_OPENAI=1`
     - Example: `OVERRIDE_AZURE_OPENAI=1 AZURE_OPENAI_ENDPOINT=... AZURE_OPENAI_EMBED_MODEL=text-embedding-3-small AZURE_OPENAI_API_KEY=... make index.create`
+
+Convert Search response → upsert payload
+
+- Build an upsert payload from a prior Search response:
+  - `make convert.payload in=embeddings/embeddings_fabricagent.json out=embeddings/upsert_payload.json action=mergeOrUpload`
+- Directly POST to your index (uses `AZURE_AI_SEARCH_*` env):
+  - `make convert.post in=embeddings/embeddings_fabricagent.json action=mergeOrUpload index=fabricagent`
+
+Implementation notes
+
+- IDs: use `sha1(file_path)-chunk_index` to satisfy Azure key constraints; original `file_path` is stored separately
+- Chunking: prompts ~500 tokens (100 overlap), transcripts ~300 (50 overlap), never split code fences; MD front‑matter is excluded from embeddings
+- Tags: lowercase, de‑duplicated; include top‑level folder and role (`prompt|guide|transcript|spec`)
