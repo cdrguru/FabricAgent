@@ -95,9 +95,10 @@ jobs:
               const deployment = body.deployment || process.env.AZURE_OPENAI_DEPLOYMENT || 'gpt-5-mini';
               if (!endpoint || !apiKey) return send(res, 500, { error: 'Missing Azure OpenAI configuration' });
               const url = `${endpoint.replace(/\/$/, '')}/openai/deployments/${deployment}/chat/completions?api-version=${encodeURIComponent(apiVersion)}`;
-              const payload = { messages: [ { role:'system', content:'You are a helpful rewriting assistant. Improve clarity and tone while preserving meaning.' }, { role:'user', content:`Instruction: ${instruction}\n\nText to rewrite:\n${text}` } ], temperature: 0.4, max_tokens: 800, n: 1 };
-              const r = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json','api-key':apiKey }, body: JSON.stringify(payload) });
-              if (!r.ok){ const t = await r.text().catch(()=> ''); return send(res, r.status, { error:'Azure OpenAI error', details:t }); }
+              const base = { messages: [ { role:'system', content:'You are a helpful rewriting assistant. Improve clarity and tone while preserving meaning.' }, { role:'user', content:`Instruction: ${instruction}\n\nText to rewrite:\n${text}` } ], temperature: 1, n: 1 };
+              async function call(p){ return fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json','api-key':apiKey }, body: JSON.stringify(p) }); }
+              let r = await call({ ...base, max_completion_tokens: 800 });
+              if (!r.ok){ const t = await r.text().catch(()=> ''); if (/max_completion_tokens/i.test(t) || /Unrecognized request argument/i.test(t)) { r = await call({ ...base, max_tokens: 800 }); } else { return send(res, r.status, { error:'Azure OpenAI error', details:t }); } }
               const data = await r.json();
               const output = data?.choices?.[0]?.message?.content || '';
               return send(res, 200, { output }, { 'Access-Control-Allow-Origin':'*' });
