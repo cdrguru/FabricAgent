@@ -23,7 +23,12 @@ dags
 myprompts
 .reports
 here/
-.kiro/*
+
+.kiro/le/*
+.speckle/*
+.speckle/*
+
+
 .speckit/*
 src/.codex_lock.sha256
 src/.certs/

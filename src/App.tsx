@@ -8,6 +8,7 @@ import HelpSection from "./HelpSection";
 import { Header } from "./components/layout/Header";
 import { Footer } from "./components/layout/Footer";
 import { Hero } from "./components/ui/Hero";
+import { BlockedResourceNotice } from "./components/ui/BlockedResourceNotice";
 import { useData } from "./hooks/useData";
 import { Prompt } from "./types";
 import { incrementViewCount } from './utils/storage';
@@ -171,6 +172,7 @@ const App: React.FC = () => {
         isDagAvailable={isDagAvailable}
         isHelp={isHelp}
       />
+      <BlockedResourceNotice />
       <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 bg-white border border-slate-300 rounded px-3 py-2 z-50">Skip to content</a>
       <main id="main-content" className="max-w-7xl mx-auto px-4 py-8">{element}</main>
       <Footer />

@@ -120,6 +120,11 @@ jobs:
           const server = http.createServer(async (req, res) => {
             const { pathname } = parse(req.url || '/');
             if (req.method === 'GET' && pathname === '/health') return send(res, 200, JSON.stringify({ ok:true, ts:new Date().toISOString() }), { 'Content-Type':'application/json' });
+            if (req.method === 'GET' && pathname === '/env-check') {
+              const keys = ['AZURE_OPENAI_ENDPOINT','AZURE_OPENAI_API_KEY','AZURE_OPENAI_KEY','AZURE_OPENAI_DEPLOYMENT','AZURE_OPENAI_MODEL','AZURE_OPENAI_MODEL_AGENT','AZURE_OPENAI_API_VERSION'];
+              const presence = Object.fromEntries(keys.map(k => [k, Boolean(process.env[k])]));
+              return send(res, 200, JSON.stringify({ ok:true, presence }), { 'Content-Type':'application/json' });
+            }
             if (pathname?.startsWith('/api/rewrite') && req.method === 'POST') return handleRewrite(req, res);
             return serveStatic(req, res, pathname);
           });
